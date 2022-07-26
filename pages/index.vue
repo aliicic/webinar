@@ -2,14 +2,14 @@
   <div>
     <div class="container-fluid">
       <div class="row webinar-live">
-        <div class="col-lg-1  webinar-live__tab" v-if="!chatStatus">
+        <div class="col-lg-1 webinar-live__tab" v-if="!chatStatus">
           <div class="webinar-live__logo">
             <img src="~/static/icon.png" alt="" />
           </div>
           <div class="webinar-live__tabs-box d-none">
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -29,7 +29,7 @@
             </div>
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -49,7 +49,7 @@
             </div>
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -74,7 +74,7 @@
             </div>
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -94,7 +94,7 @@
             </div>
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -119,7 +119,7 @@
             </div>
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174);"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -139,7 +139,7 @@
             <img src="~/static/person.jpg" alt="" />
           </div>
         </div>
-        <div class="col-lg-7  webinar-live__main">
+        <div class="col-lg-7 webinar-live__main">
           <div class="webinar-live__header" v-if="!chatStatus">
             <div class="webinar-live__back">
               <svg
@@ -153,7 +153,7 @@
                 xml:space="preserve"
                 fill="#000"
                 class="arrow"
-                style="width: 10px;"
+                style="width: 10px"
               >
                 <g>
                   <g id="c185_triangle">
@@ -182,9 +182,7 @@
                 <g></g>
               </svg>
             </div>
-            <h4 class="webinar-live__title">
-              مصاحبه تستی در وبینار انلاین
-            </h4>
+            <h4 class="webinar-live__title">مصاحبه تستی در وبینار انلاین</h4>
             <span class="webinar-live__badge ml-2 webinar-live__badge_purple">
               تیم طراحی سایت
             </span>
@@ -192,7 +190,7 @@
           <div class="webinar-live__info" v-if="!chatStatus">
             <div class="webinar-live__invited">
               <svg
-                style="height: 20px; width: 20px; color: rgb(162, 169, 177);"
+                style="height: 20px; width: 20px; color: rgb(162, 169, 177)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -215,13 +213,13 @@
                 ></path>
               </svg>
               <span>تعداد افراد دعوت شده :</span>
-              <span class="webinar-live__badge webinar-live__badge_green  f-is"
+              <span class="webinar-live__badge webinar-live__badge_green f-is"
                 >6</span
               >
             </div>
             <div class="webinar-live__absent">
               <svg
-                style="height: 20px; width: 20px; color: rgb(162, 169, 177);"
+                style="height: 20px; width: 20px; color: rgb(162, 169, 177)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -243,7 +241,7 @@
             <div class="webinar-live__add-user">
               <span class="badge">
                 <svg
-                  style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                  style="height: 20px; width: 20px; color: rgb(255, 255, 255)"
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -265,7 +263,11 @@
             @mousemove="overLayController(3000)"
             class="webinar-live-player"
           >
-            <div id="over-lay" class="webinar-live-player__overlay" @click="changeOriation">
+            <div
+              id="over-lay"
+              class="webinar-live-player__overlay"
+              @click="changeOriation"
+            >
               <div class="webinar-live-player__header">
                 <div class="webinar-live-player__publisher">
                   <div class="img-frame">
@@ -281,7 +283,7 @@
                 </div> -->
               </div>
               <div class="webinar-live-player__footer">
-                <div style="width:147px" class="d-none d-lg-block"></div>
+                <div style="width: 147px" class="d-none d-lg-block"></div>
                 <div class="webinar-live-player__controlbox">
                   <span
                     @click="fullScreen"
@@ -289,7 +291,11 @@
                   >
                     <svg
                       v-if="!fullScreenFlag"
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -321,7 +327,11 @@
                   </span>
                   <span class="wbinar-live-player__call">
                     <svg
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -341,7 +351,11 @@
                   >
                     <svg
                       v-if="!isMute"
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -382,7 +396,11 @@
                   </span>
                   <span class="wbinar-live-player__camera">
                     <svg
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -399,7 +417,11 @@
                   </span>
                   <span class="wbinar-live-player__setting">
                     <svg
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -417,7 +439,11 @@
                 <div class="webinar-live-player__valume-control">
                   <span>
                     <svg
-                      style="height: 20px; width: 20px; color: rgb(255, 255, 255);"
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        color: rgb(255, 255, 255);
+                      "
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -447,10 +473,10 @@
               class="webinar-live-player__video"
               poster="~/static/poster.jpg"
             ></video> -->
-            <img src="~/static/poster.jpg" style="width:100%" alt="">
+            <img src="~/static/poster.jpg" style="width: 100%" alt="" />
           </div>
         </div>
-        <div class="col-lg-4  live-chat">
+        <div class="col-lg-4 live-chat" style="flex: auto; overflow-y: auto">
           <LiveChat @mobileChatStatus="chatHandler" />
         </div>
       </div>
@@ -469,11 +495,11 @@ export default {
     idleTimer: null,
     idleState: false,
     isMute: false,
-    chatStatus: false
+    chatStatus: false,
   }),
   methods: {
-    changeOriation(){
-     screen.orientation.lock("portrait")
+    changeOriation() {
+      screen.orientation.lock("portrait");
     },
     chatHandler(status) {
       this.chatStatus = status;
@@ -521,7 +547,7 @@ export default {
         document.getElementById("over-lay").style.opacity = 0;
         this.idleState = true;
       }, time);
-    }
+    },
   },
   mounted() {
     this.overLayController(3000); //? time to disappear over-lay first time
@@ -533,14 +559,14 @@ export default {
 
     // angle
     console.log(current_mode.angle);
-  }
+  },
 };
 </script>
 
 <style scoped lang="scss">
-body{
-  margin-bottom: 0!important;
-  padding-bottom: 0!important;
+body {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
   overflow-x: hidden;
 }
 .webinar-live {
@@ -548,6 +574,12 @@ body{
     color: black;
   }
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap !important;
+  @media(min-width:992px){
+   flex-direction: row!important;
+  }
   &__chat {
     background: blue;
   }

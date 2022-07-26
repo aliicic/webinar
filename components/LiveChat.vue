@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="live-chat" id="temp_top" ref="liveChat" @click="LiveChatHandler" :style="[mobileChatStatus ? {'height':'calc(69vh - 10px)'} : {'height':'43vh'} ]"> -->
-  <div class="live-chat" id="temp_top" @click="LiveChatHandler" :style="[mobileChatStatus ? {'height': `${msgeraHeight}` } : {'height':'43vh'} ]">
+  <div class="live-chat" id="temp_top" @click="LiveChatHandler">
     <section class="msger">
       <div class="msger-header">
         <div class="msger-header-title">
@@ -124,24 +124,11 @@ export default {
 
   }),
 
-  computed:{
-
-   msgeraHeight(){
-   if(window.innerWidth > 428  ){
-      return '54vh'
-    }
-    if(window.innerWidth < 428 ){
-      return '64vh'
-    }
-
-   }
-
-  },
 
   methods:{
    LiveChatHandler(){
    this.mobileChatStatus = !this.mobileChatStatus
-   this.$scrollTo("#temp_top", 300, { offset: 0 });
+   //this.$scrollTo("#temp_top", 300, { offset: 0 });
    if(window.innerWidth < 992 ){
      this.$emit('mobileChatStatus' ,this.mobileChatStatus)
    }
@@ -224,7 +211,7 @@ export default {
   display: flex;
   justify-content: center;
   // align-items: start;
-  height: 100vh;
+  height: 100%;
   transition: .4s all;
   @media(min-width:992px){
   height: 100vh!important;

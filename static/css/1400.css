@@ -1,0 +1,23 @@
+#main > div:first-child {
+  position: relative;
+  z-index: 1;
+  background: #ffffffaa;
+}
+#main .main-page video {
+  margin-top: -143px;
+  max-height: 1080px;
+  display: none;
+}
+
+@media only screen and (max-width: 1600px) {
+  #main .main-page video {
+    max-height: 900px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  #main .main-page video {
+    margin-top: 0;
+  }
+}
+
+/*# sourceMappingURL=1400.css.map */

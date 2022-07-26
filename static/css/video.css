@@ -1,0 +1,91 @@
+.videos .theme--light.v-card .v-card__subtitle,
+.videos .theme--light.v-card > .v-card__text {
+  color: rgba(0, 0, 0, 0.9);
+}
+.videos .v-navigation-drawer__content .theme--light.v-icon {
+  color: rgba(0, 0, 0, 0.8);
+}
+.videos .theme--light.v-chip.v_chip {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.videos .v-tabs > .v-tabs-bar {
+  background-color: transparent;
+}
+.videos .v-navigation-drawer__border {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.skeleton_video_slug_container {
+  padding: 30px;
+  display: flex;
+}
+.skeleton_video_slug_container_video {
+  width: 68%;
+}
+.skeleton_video_slug_container_sidebar {
+  width: 30%;
+  margin-right: 2%;
+}
+.skeleton_video_slug_container_sidebar > div {
+  display: flex;
+  margin-bottom: 10px;
+  height: 20vh;
+}
+.skeleton_video_slug_container_sidebar_image {
+  width: 50%;
+  height: 100%;
+}
+.skeleton_video_slug_container .skeleton_video_slug_container_video .v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 60vh;
+}
+.skeleton_video_slug_container .v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 100%;
+}
+.skeleton_video_slug_container .skeleton_video_slug_container_sidebar .v-skeleton-loader__bone {
+  height: 50%;
+}
+.skeleton_video_slug_container .skeleton_video_slug_container_sidebar_image .v-skeleton-loader__bone {
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .skeleton_video_slug_container {
+    display: block;
+  }
+  .skeleton_video_slug_container_video {
+    width: 100%;
+  }
+  .skeleton_video_slug_container_sidebar {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 40px;
+  }
+  .skeleton_video_slug_container .skeleton_video_slug_container_video .v-skeleton-loader__image.v-skeleton-loader__bone {
+    height: 45vh;
+  }
+}
+@media only screen and (max-width: 640px) {
+  .skeleton_video_slug_container .skeleton_video_slug_container_video .v-skeleton-loader__image.v-skeleton-loader__bone {
+    height: 120vh;
+  }
+}
+@media only screen and (max-width: 468px) {
+  .skeleton_video_slug_container {
+    padding: 0;
+  }
+  .skeleton_video_slug_container .skeleton_video_slug_container_video .v-skeleton-loader__image.v-skeleton-loader__bone {
+    height: 30vh;
+  }
+}
+
+/*# sourceMappingURL=video.css.map */

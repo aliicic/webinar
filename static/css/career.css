@@ -1,0 +1,98 @@
+.fgh {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 24px;
+}
+
+.df {
+  display: flex;
+}
+
+.jcc {
+  justify-content: center;
+}
+
+label {
+  font-weight: bold;
+  text-align: right;
+}
+
+.careers__positions_filters_card {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.careers__positions_title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.careers__positions_subtitle {
+  font-size: 0.7rem;
+  margin-bottom: 3rem;
+  color: #999;
+}
+.careers__positions_items a {
+  color: #333 !important;
+}
+.careers__positions_items .v-card {
+  border-right: 6px solid #a50034;
+}
+.careers__positions_item {
+  display: flex;
+}
+.careers__positions_item > div:nth-child(2) {
+  margin-right: auto;
+}
+.careers__positions_item_detail {
+  transition: color 0.6s;
+}
+.careers__positions_item:hover .careers__positions_item_detail {
+  color: #a50034;
+}
+.careers__positions_item_title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.careers__positions_item_subtitle {
+  font-size: 14px;
+  color: #888;
+}
+
+.career {
+  padding-bottom: 230px;
+}
+.career__detail_header {
+  display: flex;
+}
+.career__detail_header h1 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.career__detail_header_cat {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.7rem;
+}
+.career__detail_apply {
+  margin-right: auto;
+}
+.career__detail_content {
+  color: #24505c;
+}
+.career__detail_content ul {
+  list-style-type: initial;
+}
+.career__detail_content h1 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.career__apply {
+  padding-bottom: 230px;
+}
+.career__apply .v-label {
+  margin-bottom: 0;
+}
+
+/*# sourceMappingURL=career.css.map */

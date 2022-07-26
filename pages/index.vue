@@ -472,7 +472,7 @@
             <img src="~/static/poster.jpg" style="width: 100%" alt="" />
           </div>
         </div>
-        <div class="col-lg-4 live-chat">
+        <div class="col-lg-4 live-chat" style="flex: auto; overflow-y: auto">
           <LiveChat @mobileChatStatus="chatHandler" />
         </div>
       </div>
@@ -603,7 +603,14 @@ body {
   * {
     color: black;
   }
+  //height: calc(100vh - 30px);
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap !important;
+  @media(min-width:992px){
+   flex-direction: row!important;
+  }
   &__chat {
     background: blue;
   }

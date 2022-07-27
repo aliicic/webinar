@@ -2,7 +2,8 @@
   <div>
     <div class="container-fluid">
       <div class="row webinar-live">
-        <div class="col-lg-1 webinar-live__tab" v-if="!chatStatus">
+
+        <div class="col-lg-1 webinar-live__tab" :class="{ hidden : chatStatus  }" >
           <div class="webinar-live__logo">
             <img src="~/static/icon.png" alt="" />
           </div>
@@ -139,8 +140,10 @@
             <img src="~/static/person.jpg" alt="" />
           </div>
         </div>
-        <div class="col-lg-7 webinar-live__main">
-          <div class="webinar-live__header" v-if="!chatStatus">
+
+        <div class="col-lg-7 webinar-live__main"  >
+
+          <div class="webinar-live__header" :class="{ hidden : chatStatus  }" >
             <div class="webinar-live__back">
               <svg
                 version="1.1"
@@ -187,7 +190,8 @@
               تیم طراحی سایت
             </span>
           </div>
-          <div class="webinar-live__info" v-if="!chatStatus">
+
+          <div class="webinar-live__info" :class="{ hidden : chatStatus  }">
             <div class="webinar-live__invited">
               <svg
                 style="height: 20px; width: 20px; color: rgb(162, 169, 177)"
@@ -258,6 +262,8 @@
               <span>اضافه کردن کاربران به وبینار</span>
             </div>
           </div>
+
+
           <div
             id="video-container"
             @mousemove="overLayController(3000)"
@@ -496,6 +502,14 @@ export default {
   methods: {
     chatHandler(status) {
       this.chatStatus = status;
+      // if(status){
+      //   this.$refs.mobileHeader.style.height = 0
+      //   this.$refs.webinarInfo1.style.height = 0
+      //   this.$refs.webinarInfo2.style.height = 0
+      //   this.$refs.webinarInfo2.style.padding = 0
+      //   this.$refs.webinarInfo2.style.padding = 0
+      //   this.$refs.webinarInfo2.style.height = 0
+      // }
     },
     fullScreen() {
       var element = document.getElementById("video-container");
@@ -548,47 +562,16 @@ export default {
     },
   },
   mounted() {
-    this.overLayController(3000); //? time to disappear over-lay first time
+this.overLayController(3000); //? time to disappear over-lay first time
 
-    //? for go to full screen and undo in rotate device
-    var element = document.getElementById("video-container");
-    screen.addEventListener("orientationchange", function () {
-      if (window.innerWidth > window.innerHeight) {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        }
-        if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
-        }
-        screen.orientation.lock("landscape-primary");
-        this.fullScreenFlag = true;
-        return;
-      } else {
-        screen.orientation.lock("portrait");
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        }
-
-        this.fullScreenFlag = false;
-        return;
-      }
-    });
-
-    //var current_mode = screen.orientation;
-
-    // // type
-    console.log(screen.orientation.type);
-
-    // // angle
-    // console.log(current_mode.angle);
+//? for calc urlbar and navigator in mobile & tablet devices
+window.addEventListener('resize', () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
   },
 };
 </script>
@@ -597,14 +580,17 @@ export default {
 body {
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
-  overflow-x: hidden;
+  overflow: hidden;
 }
+
 .webinar-live {
   * {
     color: black;
   }
   //height: calc(100vh - 30px);
   height: 100vh;
+  // min-height: -webkit-fill-available;
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap !important;
@@ -626,6 +612,7 @@ body {
     border-bottom: 2px solid rgba(85, 85, 85, 0.192);
     display: flex;
     align-items: center;
+    transition: .4s all;
     @media (max-width: 992px) {
       padding: 5px;
     }
@@ -656,6 +643,7 @@ body {
     padding: 20px 10px;
     flex-wrap: nowrap;
     overflow-x: scroll;
+    transition: .4s all;
     @media (max-width: 992px) {
       padding: 10px 10px;
     }
@@ -730,6 +718,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+       transition: .4s all;
     @media (max-width: 992px) {
       flex-direction: row;
       padding-top: 5px;
@@ -1022,4 +1011,13 @@ body {
     height: 100%;
   }
 }
+
+.hidden{
+  overflow: hidden!important;
+  padding: 0!important;
+  height: 0px!important;
+  opacity: 0!important;
+  transition: .4s all;
+}
+
 </style>

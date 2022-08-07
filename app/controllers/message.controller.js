@@ -1,6 +1,6 @@
 const Controller = require("../controller");
 const { ConversationModel } = require("../models/conversation");
-class MessageController { }
+class MessageController extends Controller { }
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 
 module.exports = {

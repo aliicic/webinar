@@ -45,36 +45,35 @@ module.exports = class Application {
           swaggerDefinition: {
             openapi: "3.0.0",
             info: {
-              title: "Boto Start Store",
+              title: "icic",
               version: "2.0.0",
-              description:
-                "بزرگترین مرجع آموزش برنامه نویسی و فروش محصولات جذاب برای برنامه نویسان",
+              description:"test",
               contact: {
-                name: "Erfan Yousefi",
-                url: "https://freerealapi.com",
-                email: "erfanyousefi.co@gmail.com",
+                name: "test",
+                url: "test",
+                email: "test",
               },
             },
             servers: [
               {
                 url: "http://localhost:4000",
               },
-              {
-                url: "http://localhost:5000",
-              },
+              // {
+              //   url: "http://localhost:5000",
+              // },
             ],
-            components: {
-              securitySchemes: {
-                BearerAuth: {
-                  type: "http",
-                  scheme: "bearer",
-                  bearerFormat: "JWT",
-                },
-              },
-            },
-            security: [{ BearerAuth: [] }],
+            // components: {
+            //   securitySchemes: {
+            //     BearerAuth: {
+            //       type: "http",
+            //       scheme: "bearer",
+            //       bearerFormat: "JWT",
+            //     },
+            //   },
+            // },
+            // security: [{ BearerAuth: [] }],
           },
-          apis: ["./app/router/**/*.js"],
+          apis: ["./app/router/*.js"],
         }),
         { explorer: true }
       )

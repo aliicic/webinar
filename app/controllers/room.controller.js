@@ -1,16 +1,23 @@
 const Controller = require("../controller");
 const { ConversationModel } = require("../models/conversation");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
-class RoomController  {
+const createHttpError = require("http-errors");
+const path = require("path")
+class RoomController extends Controller {
   async addRoom(req, res, next) {
     try {
-      const { name, description, filename, fileUploadPath ,namespace } = req.body;
+      const { name, description, filename, fileUploadPath, namespace } =
+        req.body;
+      await this.findConversationWithEndpoint(namespace);
       await this.findRoomWithName(name);
       const image = path.join(fileUploadPath, filename).replace(/\\/g, "/");
       const room = { name, description, image };
-      const conversation = await ConversationModel.updateOne({ endpoint: namespace }, {
-        $push : {rooms :room}
-      })
+      const conversation = await ConversationModel.updateOne(
+        { endpoint: namespace },
+        {
+          $push: { rooms: room },
+        }
+      );
       return res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
         data: {
@@ -42,6 +49,12 @@ class RoomController  {
     });
     if (conversation)
       throw createHttpError.BadRequest("این اسم قبلا انتخاب شده ");
+  }
+  async findConversationWithEndpoint(endpoint) {
+    const conversation = await ConversationModel.findOne({ endpoint });
+    if (!conversation)
+      throw createHttpError.NotFound("فضای مگالمه ای یافت نشد");
+    return conversation;
   }
 }
 module.exports = {

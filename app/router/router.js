@@ -19,8 +19,8 @@ const router = require("express").Router();
 // router.use("/blogs", blogApiPrisma)
 // router.use("/category", CategoryApiPrisma)
 // router.use("/graphql", graphqlHTTP(graphqlConfig));
-// router.use("/", SupportSectionRouter);
-// router.use("/", HomeRoutes);
+ router.use("/", SupportSectionRouter);
+//  router.use("/", HomeRoutes);
 module.exports = {
   AllRoutes: router,
 };

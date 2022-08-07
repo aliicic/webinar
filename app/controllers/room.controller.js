@@ -1,6 +1,7 @@
 const Controller = require("../controller");
 const { ConversationModel } = require("../models/conversation");
-class RoomController extends Controller {
+const { StatusCodes: HttpStatus } = require("http-status-codes");
+class RoomController  {
   async addRoom(req, res, next) {
     try {
       const { name, description, filename, fileUploadPath ,namespace } = req.body;
@@ -43,7 +44,6 @@ class RoomController extends Controller {
       throw createHttpError.BadRequest("این اسم قبلا انتخاب شده ");
   }
 }
-const { StatusCodes: HttpStatus } = require("http-status-code");
 module.exports = {
   RoomController: new RoomController(),
 };

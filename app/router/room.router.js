@@ -5,5 +5,5 @@ router.post("/add", RoomController.addRoom);
 router.get("/list", RoomController.getListOfRooms);
 
 module.exports = {
-  SupportSectionRouter: router,
+  ApiRoomRouter: router,
 };

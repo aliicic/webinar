@@ -1,7 +1,7 @@
 const { ConversationModel } = require("../models/conversation");
 const Controller = require("../controller")
-const {StatusCodes: HttpStatus} = require("http-status-code")
-class NamespaceController extends Controller{
+const {StatusCodes: HttpStatus} = require("http-status-codes")
+class NamespaceController {
 
    async addNamespace(req, res, next) {
         try {

@@ -1,5 +1,5 @@
 const { ConversationModel } = require("../models/conversation");
-const Controller = require("./../controller")
+const Controller = require("../controller")
 const {StatusCodes: HttpStatus} = require("http-status-code")
 class NamespaceController extends Controller{
 
@@ -7,6 +7,7 @@ class NamespaceController extends Controller{
         try {
             
             const { title, endpoint } = req.body
+            await this.findNamespaceWithEndpoint(endpoint);
             const conversation = await ConversationModel.create({title,endpoint})
             return res.status(HttpStatus.CREATED).json({
                 statusCode: HttpStatus.CREATED,
@@ -32,6 +33,11 @@ class NamespaceController extends Controller{
         } catch (error) {
             next(error)
         }
+    }
+
+    async findNamespaceWithEndpoint(endpoint) {
+        const conversation = await ConversationModel.findOne({ endpoint });
+        if(conversation) throw createHttpError.BadRequest("این اسم قبلا انتخاب شده ")
     }
 
 }

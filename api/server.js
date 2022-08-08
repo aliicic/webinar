@@ -30,6 +30,7 @@ module.exports = class Application {
     this.createServer();
     this.createRoutes();
     this.errorHandling();
+    this.x();
   }
   configApplication() {
     this.#app.use(cors());
@@ -56,7 +57,7 @@ module.exports = class Application {
             },
             servers: [
               {
-                url: "http://localhost:4000",
+                url: "http://localhost:3000",
               },
               // {
               //   url: "http://localhost:5000",
@@ -108,6 +109,15 @@ module.exports = class Application {
 
   createRoutes() {
     this.#app.use(AllRoutes);
+  }
+  x() {
+    if (require.main === module) {
+      const port = process.env.PORT || 3001;
+      this.#app.listen(port, () => {
+        // eslint-disable-next-line no-console
+        console.log(`API server listening on port ${port}`);
+      });
+    }
   }
   errorHandling() {
     this.#app.use((req, res, next) => {

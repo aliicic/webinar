@@ -560,8 +560,18 @@ export default {
         this.idleState = true;
       }, time);
     },
+
+   async getpost() {
+       let posts = await fetch(
+        `http://localhost:4000/support`
+       ).then(res => res.json())
+      console.log(posts);
+    }
+   
   },
   mounted() {
+    this.getpost() 
+    
 this.overLayController(3000); //? time to disappear over-lay first time
 
 //? for calc urlbar and navigator in mobile & tablet devices

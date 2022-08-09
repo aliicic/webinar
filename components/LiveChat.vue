@@ -51,22 +51,22 @@
           v-for="(message, index) in messages"
           :key="index"
           :class="[
-            { 'right-msg': message.dir === 'right' },
-            { 'left-msg': message.dir === 'left' },
+            { 'right-msg': sender !== message.name },
+            { 'left-msg': sender === message.name },
           ]"
         >
           <div
             class="msg-img"
-            :style="{ background: 'url(' + message.image + ')' }"
+            style="background:url('/person.jpg')"
           ></div>
 
           <div class="msg-bubble">
             <div class="msg-info">
               <div class="msg-info-name">{{ message.name }}</div>
-              <div class="msg-info-time">{{ message.time }}</div>
+              <div class="msg-info-time">{{ message.dateTime }}</div>
             </div>
             <div class="msg-text">
-              {{ message.text }}
+              {{ message.message }}
             </div>
           </div>
         </div>
@@ -104,8 +104,9 @@
 <script>
 export default {
   name: "LiveChat",
-  props: ["confirmedMessage"],
+  props: ["confirmedMessage","oldMessages"],
   data: () => ({
+    // sender:'',
     mobileChatStatus: false,
     yourMessage: "",
     PersonName: "علی",
@@ -116,31 +117,8 @@ export default {
     messages: [
       {
         name: "علی حاجی آقاخانی",
-        text: "سلام خوبی  چه خبرا ؟",
-        time: "19:29",
-        dir: "right",
-        image: "/person.jpg",
-      },
-      {
-        name: "علی",
-        text: "سلام خوبی  چه خبرا ؟",
-        time: "19:29",
-        dir: "left",
-        image: "/person.jpg",
-      },
-      {
-        name: "علی",
-        text: "سلام خوبی  چه خبرا ؟",
-        time: "19:29",
-        dir: "right",
-        image: "/person.jpg",
-      },
-      {
-        name: "علی",
-        text: "سلام خوبی  چه خبرا ؟",
-        time: "19:29",
-        dir: "left",
-        image: "/person.jpg",
+        message: "سلام خوبی  چه خبرا ؟",
+        dateTime: "19:29",
       },
     ],
   }),
@@ -149,15 +127,31 @@ export default {
       channel: "/dynamic",
       reconnection: false,
     });
-
+    // console.log(this.oldMessages)
+    setTimeout(() => {
+     this.messages =this.oldMessages 
+    },1000)
     this.msgerChat = document.getElementsByClassName("msger-chat")[0];
     this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
-
+    this.sender = localStorage.getItem("name")
     function get(selector, root = document) {
       return root.querySelector(selector);
     }
   },
-
+  watch:{
+    confirmedMessage() {
+      setTimeout(() => {
+         console.log(this.confirmedMessage, "chat")
+        this.appendMessage(
+        this.confirmedMessage.sender,
+        this.PersonImg,
+        "left",
+        this.confirmedMessage.message,
+        Date.now()
+      );
+      },10)
+   }
+  },
   methods: {
     LiveChatHandler() {
       this.mobileChatStatus = !this.mobileChatStatus;
@@ -183,46 +177,18 @@ export default {
     async submit() {
       if (!this.yourMessage) return;
       this.$emit("submit", this.yourMessage)
-       setTimeout(() => {
-         console.log(this.confirmedMessage, "chat")
-        this.appendMessage(
-        this.name,
-        this.PersonImg,
-        "left",
-        this.confirmedMessage.message,
-        this.time
-      );
-      },10)
-   
       this.yourMessage = "";
     },
 
-    //  appendMessage(name,img,dir,msg){
-
-    //  const promise = new Promise((resolve,reject)=>{
-
-    //    this.messages.push({name : name , image:img, dir:dir, text : msg })
-    //    resolve(true)
-
-    //  })
-    //  promise.then(()=>{
-    //     this.scrollToEnd()
-    //  })
-
-    //   // setTimeout(()=>{
-    //   //   this.scrollToEnd()
-    //   // },10)
-
-    // },
 
     async appendMessage(name, img, dir, msg, time) {
    
       await this.messages.push({
         name: name,
-        image: img,
-        dir: dir,
-        text: msg,
-        time: time,
+        // image: img,
+        // dir: dir,
+        message: msg,
+        dateTime: time,
       });
       await this.scrollToEnd();
     },

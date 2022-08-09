@@ -183,9 +183,9 @@
                 <g></g>
               </svg>
             </div>
-            <h4 class="webinar-live__title">{{ $nuxt._route.params.room }}</h4>
+            <h4 class="webinar-live__title"> {{userName}}</h4>
             <span class="webinar-live__badge ml-2 webinar-live__badge_purple">
-              تیم طراحی سایت
+             {{ $nuxt._route.params.room }}
             </span>
           </div>
 
@@ -476,7 +476,11 @@
           </div>
         </div>
         <div class="col-lg-4 live-chat" style="flex: auto; overflow-y: auto">
-          <LiveChat @mobileChatStatus="chatHandler" @submit="send" :confirmedMessage="confirmedMessage" />
+          <LiveChat 
+          @mobileChatStatus="chatHandler"
+           @submit="send" 
+           :confirmedMessage="confirmedMessage"
+           :oldMessages="messages" />
         </div>
       </div>
     </div>
@@ -500,13 +504,16 @@ export default {
     socket: null,
     endpoint: 'webinars',
     roomName: '',
-    confirmedMessage :null
+    confirmedMessage: null,
+    userName: '',
+    messages : []
   }),
   methods: {
    async send(message) {
       await this.socket.emit('newMessage', {
+        sender : this.userName,
         message,
-        roomName : this.roomName,
+        roomName : this.roomName, 
         endpoint : this.endpoint
       })
       await this.socket.on('confirmMessage',  data => {
@@ -581,6 +588,8 @@ export default {
     async roomInfo() {
       await this.socket.on("roomInfo", (roomInfo) => {
         this.roomName = roomInfo.name
+        // console.log(roomInfo.messages, 'rooooom')
+        this.messages = roomInfo.messages
         // console.log(this.roomName , 'this is roomname')
       });
       await this.socket.on("countOfOnlineUsers", (count) => {
@@ -589,8 +598,8 @@ export default {
     },
   },
   mounted() {
-   
-
+    this.userName = localStorage.getItem("name")  
+ 
     this.socket = this.$nuxtSocket({
       // nuxt-socket-io opts:
       // name: "", // Use socket "home"

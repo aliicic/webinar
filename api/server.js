@@ -11,7 +11,10 @@ const { AllRoutes } = require("./router/router");
 const { initialSocket } = require("./utils/initSocket");
 const { socketHandler } = require("./socket.io");
 
-// const { COOKIE_PARSER_SECRET_KEY } = require("./utils/constans");
+const session = require("express-session")
+const cookieParser = require("cookie-parser");
+
+const { COOKIE_PARSER_SECRET_KEY } = require("./utils/constans");
 // const { clientHelper } = require("./utils/client");
 // const { uploadFile } = require("./utils/multer");
 // const fileUpload = require("express-fileupload");
@@ -48,7 +51,7 @@ module.exports = class Application {
             info: {
               title: "icic",
               version: "2.0.0",
-              description:"test",
+              description: "test",
               contact: {
                 name: "test",
                 url: "test",
@@ -134,5 +137,18 @@ module.exports = class Application {
         },
       });
     });
+  }
+  initClientSession() {
+    this.#app.use(cookieParser(COOKIE_PARSER_SECRET_KEY));
+    this.#app.use(
+      session({
+        secret: COOKIE_PARSER_SECRET_KEY,
+        resave: true,
+        saveUninitialized: true,
+        cookie: {
+          secure: true,
+        },
+      })
+    );
   }
 };

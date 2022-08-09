@@ -74,19 +74,20 @@ module.exports = class NamespaceSocketHandler {
     getNewMessage(socket){
         socket.on("newMessage", async data => {
           //console.log(data);
-          const { message, roomName, endpoint } = data
+          const { message, roomName, endpoint , sender } = data
                 console.log(message);
                 console.log(roomName);
                 console.log(endpoint);
-            await ConversationModel.updateOne({endpoint, "rooms.name": roomName}, {
-                $push : {
-                    "rooms.$.messages" : {
-                        name :"ali aghakhani",
-                        message, 
-                        dateTime: Date.now()
-                    } 
-                }
-            })
+                console.log(sender);
+            // await ConversationModel.updateOne({endpoint, "rooms.name": roomName}, {
+            //     $push : {
+            //         "rooms.$.messages" : {
+            //             name :sender,
+            //             message, 
+            //             dateTime: Date.now()
+            //         } 
+            //     }
+            // })
             this.#io.of(`/${endpoint}`).in(roomName).emit("confirmMessage", data)
         })
     }

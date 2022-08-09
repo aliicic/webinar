@@ -3,16 +3,13 @@
   <div class="live-chat" id="temp_top" @click="LiveChatHandler">
     <section class="msger">
       <div class="msger-header">
-        <div class="msger-header-title">
-          چت گروهی
-        </div>
+        <div class="msger-header-title">چت گروهی</div>
         <div class="msger-header-options">
           <span class="messages">پیام ها</span>
           <span class="members">شرکت کنندگان</span>
         </div>
       </div>
       <main class="msger-chat">
-
         <!-- <div class="msg left-msg">
           <div
             class="msg-img"
@@ -49,40 +46,43 @@
           </div>
         </div> -->
 
-        <div class="msg f-is" v-for="message , index in messages" :key="index" :class="[{ 'right-msg': message.dir === 'right' },{ 'left-msg': message.dir === 'left' }]" >
         <div
+          class="msg f-is"
+          v-for="(message, index) in messages"
+          :key="index"
+          :class="[
+            { 'right-msg': message.dir === 'right' },
+            { 'left-msg': message.dir === 'left' },
+          ]"
+        >
+          <div
             class="msg-img"
-            :style="{background : 'url(' + message.image + ')'}"
+            :style="{ background: 'url(' + message.image + ')' }"
           ></div>
 
-
           <div class="msg-bubble">
-             <div class="msg-info">
-              <div class="msg-info-name">{{message.name}}</div>
-              <div class="msg-info-time">{{message.time}}</div>
+            <div class="msg-info">
+              <div class="msg-info-name">{{ message.name }}</div>
+              <div class="msg-info-time">{{ message.time }}</div>
             </div>
             <div class="msg-text">
-              {{message.text}}
+              {{ message.text }}
             </div>
           </div>
-
-
         </div>
-
       </main>
-      <p class="istyping">{{typing}}</p>
+      <p class="istyping">{{ typing }}</p>
       <form class="msger-inputarea">
         <input
           type="text"
           class="msger-input"
           placeholder="پیام خود را وارد کنید"
           v-model="yourMessage"
-
           @keyup="handle()"
-        >
+        />
         <button class="msger-send-btn" @click.prevent="submit">
           <svg
-            style="height: 40px; width: 40px; color: rgb(255, 255, 255);"
+            style="height: 40px; width: 40px; color: rgb(255, 255, 255)"
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -97,7 +97,6 @@
           </svg>
         </button>
       </form>
-
     </section>
   </div>
 </template>
@@ -105,104 +104,133 @@
 <script>
 export default {
   name: "LiveChat",
-
-  data :()=>({
-  mobileChatStatus : false,
-  yourMessage : "",
-  PersonName  :"علی",
-  PersonImg :'/person.jpg',
-  msgerChat: '',
-  typing : '',
-  time: '19:29',
-  messages : [
-    {name :'علی حاجی آقاخانی',text: 'سلام خوبی  چه خبرا ؟', time : '19:29' , dir : 'right' , image : '/person.jpg'  },
-    {name : 'علی',text: 'سلام خوبی  چه خبرا ؟', time : '19:29' , dir : 'left' , image : '/person.jpg'},
-    {name : 'علی',text: 'سلام خوبی  چه خبرا ؟', time : '19:29' , dir : 'right' , image : '/person.jpg'  },
-    {name : 'علی',text: 'سلام خوبی  چه خبرا ؟', time : '19:29' , dir : 'left' , image : '/person.jpg'  },
-
-  ]
-
+  props: ["confirmedMessage"],
+  data: () => ({
+    mobileChatStatus: false,
+    yourMessage: "",
+    PersonName: "علی",
+    PersonImg: "/person.jpg",
+    msgerChat: "",
+    typing: "",
+    time: "19:29",
+    messages: [
+      {
+        name: "علی حاجی آقاخانی",
+        text: "سلام خوبی  چه خبرا ؟",
+        time: "19:29",
+        dir: "right",
+        image: "/person.jpg",
+      },
+      {
+        name: "علی",
+        text: "سلام خوبی  چه خبرا ؟",
+        time: "19:29",
+        dir: "left",
+        image: "/person.jpg",
+      },
+      {
+        name: "علی",
+        text: "سلام خوبی  چه خبرا ؟",
+        time: "19:29",
+        dir: "right",
+        image: "/person.jpg",
+      },
+      {
+        name: "علی",
+        text: "سلام خوبی  چه خبرا ؟",
+        time: "19:29",
+        dir: "left",
+        image: "/person.jpg",
+      },
+    ],
   }),
-
-
-  methods:{
-   LiveChatHandler(){
-   this.mobileChatStatus = !this.mobileChatStatus
-   //this.$scrollTo("#temp_top", 300, { offset: 0 });
-   if(window.innerWidth < 992 ){
-     this.$emit('mobileChatStatus' ,this.mobileChatStatus)
-   }
-      // const [el] = this.$refs.input;
-      // if (el) {
-      //   el.scrollIntoView(false);
-      // }
-
-
-   },
-   handle(){
-
-      this.typing = "درحال تایپ کردن ..."
-      let oldmsg = this.yourMessage
-      setTimeout(()=>{
-      if( oldmsg === this.yourMessage){
-        this.typing = ""
-      }},2000)
-
-
-
-   },
-
-   submit(){
-
-    if(!this.yourMessage) return ;
-    this.appendMessage(this.PersonName ,this.PersonImg,"left",this.yourMessage ,this.time)
-    this.yourMessage = ""
-
-
-  },
-
-  //  appendMessage(name,img,dir,msg){
-
-  //  const promise = new Promise((resolve,reject)=>{
-
-  //    this.messages.push({name : name , image:img, dir:dir, text : msg })
-  //    resolve(true)
-
-  //  })
-  //  promise.then(()=>{
-  //     this.scrollToEnd()
-  //  })
-
-
-
-  //   // setTimeout(()=>{
-  //   //   this.scrollToEnd()
-  //   // },10)
-
-
-  // },
-  async appendMessage(name,img,dir,msg ,time){
-    await this.messages.push({name : name , image:img, dir:dir, text : msg , time: time })
-    await this.scrollToEnd()
-  },
-  scrollToEnd(){
-   this.msgerChat.scrollTop = this.msgerChat.scrollHeight
-  }
-
-
-  },
-
   mounted() {
+    this.socket = this.$nuxtSocket({
+      channel: "/dynamic",
+      reconnection: false,
+    });
 
     this.msgerChat = document.getElementsByClassName("msger-chat")[0];
     this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
 
-
     function get(selector, root = document) {
       return root.querySelector(selector);
     }
+  },
 
-  }
+  methods: {
+    LiveChatHandler() {
+      this.mobileChatStatus = !this.mobileChatStatus;
+      //this.$scrollTo("#temp_top", 300, { offset: 0 });
+      if (window.innerWidth < 992) {
+        this.$emit("mobileChatStatus", this.mobileChatStatus);
+      }
+      // const [el] = this.$refs.input;
+      // if (el) {
+      //   el.scrollIntoView(false);
+      // }
+    },
+    handle() {
+      this.typing = "درحال تایپ کردن ...";
+      let oldmsg = this.yourMessage;
+      setTimeout(() => {
+        if (oldmsg === this.yourMessage) {
+          this.typing = "";
+        }
+      }, 2000);
+    },
+
+    async submit() {
+      if (!this.yourMessage) return;
+      this.$emit("submit", this.yourMessage)
+       setTimeout(() => {
+         console.log(this.confirmedMessage, "chat")
+        this.appendMessage(
+        this.name,
+        this.PersonImg,
+        "left",
+        this.confirmedMessage.message,
+        this.time
+      );
+      },10)
+   
+      this.yourMessage = "";
+    },
+
+    //  appendMessage(name,img,dir,msg){
+
+    //  const promise = new Promise((resolve,reject)=>{
+
+    //    this.messages.push({name : name , image:img, dir:dir, text : msg })
+    //    resolve(true)
+
+    //  })
+    //  promise.then(()=>{
+    //     this.scrollToEnd()
+    //  })
+
+    //   // setTimeout(()=>{
+    //   //   this.scrollToEnd()
+    //   // },10)
+
+    // },
+
+    async appendMessage(name, img, dir, msg, time) {
+   
+      await this.messages.push({
+        name: name,
+        image: img,
+        dir: dir,
+        text: msg,
+        time: time,
+      });
+      await this.scrollToEnd();
+    },
+    scrollToEnd() {
+      this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+    },
+
+  },
 };
 </script>
 
@@ -212,10 +240,10 @@ export default {
   justify-content: center;
   // align-items: start;
   height: 100%;
-  transition: .4s all;
-  @media(min-width:992px){
-  height: 100vh!important;
-  align-items: center;
+  transition: 0.4s all;
+  @media (min-width: 992px) {
+    height: 100vh !important;
+    align-items: center;
   }
 
   .msger {
@@ -226,21 +254,21 @@ export default {
     max-width: 867px;
     margin: 25px 10px;
 
-   height: calc(100% - 30px);
+    height: calc(100% - 30px);
 
-   // height: 69vh;
+    // height: 69vh;
     border: var(--border);
     border-radius: 15px;
     overflow: hidden;
     background: #edf0f5;
     box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
     position: relative;
-    @media(max-width:992px){
-          margin: 0px 0px;
-          height: 100%;
+    @media (max-width: 992px) {
+      margin: 0px 0px;
+      height: 100%;
     }
   }
-   .msger .istyping {
+  .msger .istyping {
     margin-bottom: 0;
     font-size: 10px;
     margin-right: 20px;
@@ -257,25 +285,24 @@ export default {
     background: #edf0f5b2;
     color: #666;
     position: absolute;
-    width:100%;
-    top:0;
+    width: 100%;
+    top: 0;
     left: 0;
     backdrop-filter: blur(5px);
     box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
   }
-  .msger-header  span{
+  .msger-header span {
     margin: 0 10px;
-    font-size: .8rem;
+    font-size: 0.8rem;
     // @media(max-width:992px){
     //   font-size: 12px;
     // }
   }
-  .msger-header .messages{
-    background:#d1e6e7 ;
+  .msger-header .messages {
+    background: #d1e6e7;
     color: #2e7e71;
     padding: 10px;
     border-radius: 15px;
-
   }
 
   .msger-chat {
@@ -297,14 +324,13 @@ export default {
     display: flex;
     align-items: flex-end;
     margin-bottom: 10px;
-
   }
-  .msg:first-child{
+  .msg:first-child {
     padding-top: 50px;
   }
-  .msg-text{
-    color:black;
-    font-size: .8rem;
+  .msg-text {
+    color: black;
+    font-size: 0.8rem;
     word-wrap: break-word;
     //  @media(max-width:992px){
     //   font-size: 12px;
@@ -317,23 +343,23 @@ export default {
     width: 40px;
     height: 40px;
     min-width: 40px;
-    border :1px solid white;
+    border: 1px solid white;
     margin-right: 10px;
     background: #ddd;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover!important;
+    background-size: cover !important;
     border-radius: 50%;
-  //    @media(max-width:992px){
-  // // width: 40px;
-  // //   height: 40px;
-  // //    }
+    //    @media(max-width:992px){
+    // // width: 40px;
+    // //   height: 40px;
+    // //    }
   }
   .msg-bubble {
     max-width: 450px;
     padding: 15px;
     border-radius: 15px;
-    background:#d0d3e2;
+    background: #d0d3e2;
     margin: 10px;
   }
   .msg-info {
@@ -345,15 +371,15 @@ export default {
   .msg-info-name {
     margin-right: 10px;
     font-weight: bold;
-    font-size: .8rem;
-    margin-left:15px;
+    font-size: 0.8rem;
+    margin-left: 15px;
     //  @media(max-width:992px){
     //   font-size: 12px;
     // }
   }
   .msg-info-time {
     font-size: 0.85em;
-    @media(max-width:992px){
+    @media (max-width: 992px) {
       font-size: 12px;
     }
   }
@@ -369,7 +395,8 @@ export default {
     background: white;
     color: black;
     border-bottom-left-radius: 0;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   }
   .right-msg .msg-img {
     margin: 0 0 0 10px;
@@ -381,7 +408,7 @@ export default {
     border-top: var(--border);
     background: white;
     margin: 10px;
-    border-radius:15px ;
+    border-radius: 15px;
   }
   .msger-inputarea * {
     padding: 10px;
@@ -405,7 +432,7 @@ export default {
     border-radius: 15px;
   }
   .msger-send-btn:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
 
   .msger-chat {

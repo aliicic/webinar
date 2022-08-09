@@ -1,16 +1,16 @@
 const { default: mongoose } = require("mongoose");
 
 const messageSchema = new mongoose.Schema({
-  name: { type: mongoose.Types.ObjectId, ref: "user" },
+  name: { type: String },
   message: { type: String },
-  dateTime: { type: String },
+  dateTime: { type: Number },
 });
 
 const roomSchema = new mongoose.Schema({
   name: { type: String },
   description: { type: String },
   image: { type: String },
-  message: { type: [messageSchema], default : [] },
+  messages: { type: [messageSchema], default : [] },
 });
 
 const conversationSchema = new mongoose.Schema({

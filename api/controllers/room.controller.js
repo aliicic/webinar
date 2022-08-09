@@ -6,8 +6,7 @@ const path = require("path")
 class RoomController extends Controller {
   async addRoom(req, res, next) {
     try {
-      const { name, description, filename, fileUploadPath, namespace } =
-        req.body;
+      const { name, description, filename, fileUploadPath, namespace } = req.body;
       await this.findConversationWithEndpoint(namespace);
       await this.findRoomWithName(name);
       const image = path.join(fileUploadPath, filename).replace(/\\/g, "/");
@@ -35,7 +34,7 @@ class RoomController extends Controller {
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data: {
-          rooms: conversation.rooms,
+          rooms : conversation.rooms
         },
       });
     } catch (error) {

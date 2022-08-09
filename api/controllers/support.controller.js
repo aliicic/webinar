@@ -13,6 +13,15 @@ class SupportController {
   //     next(error);
   //   }
   // }
+  login(req, res, next) {
+    try {
+      return res.json({
+        body: req.body,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   // async login(req, res, next) {
   //   try {
   //     const { mobile } = req.body;
@@ -35,13 +44,13 @@ class SupportController {
   //     next(error);
   //   }
   // }
-  renderChatRoom(req, res, next) {
-    try {
-      return res.render("chat.ejs");
-    } catch (error) {
-      next(error);
-    }
-  }
+  // renderChatRoom(req, res, next) {
+  //   try {
+  //     return res.render("chat.ejs");
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 }
 module.exports = {
   SupportController: new SupportController(),

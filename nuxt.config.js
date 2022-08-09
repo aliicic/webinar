@@ -135,13 +135,31 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     ["vue-scrollto/nuxt", { duration: 300 }],
+    ["nuxt-socket-io"],
   ],
+
+  io: {
+    sockets: [
+      // Required
+      {
+        // At least one entry is required
+        name: "home",
+        url: "http://localhost:4000/webinars",
+        default: true,
+        // vuex: {
+        //   /* see section below */
+        // },
+        // namespaces:"webinars",
+      },
+
+    ],
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: "/",
-    proxy:true
+    proxy: true,
   },
   // proxy: {
   //   "/api": { target: "http://127.0.0.1:4000" },

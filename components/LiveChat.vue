@@ -106,7 +106,7 @@ export default {
   name: "LiveChat",
   props: ["confirmedMessage","oldMessages"],
   data: () => ({
-    // sender:'',
+    sender:'',
     mobileChatStatus: false,
     yourMessage: "",
     PersonName: "علی",
@@ -114,13 +114,7 @@ export default {
     msgerChat: "",
     typing: "",
     time: "19:29",
-    messages: [
-      {
-        name: "علی حاجی آقاخانی",
-        message: "سلام خوبی  چه خبرا ؟",
-        dateTime: "19:29",
-      },
-    ],
+    messages: [],
   }),
   mounted() {
     this.socket = this.$nuxtSocket({

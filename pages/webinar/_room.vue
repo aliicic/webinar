@@ -516,10 +516,10 @@ export default {
         roomName : this.roomName, 
         endpoint : this.endpoint
       })
-      await this.socket.on('confirmMessage',  data => {
-       this.confirmedMessage=data
-        console.log(this.confirmedMessage, 'confirmed message')
-      })
+      // await this.socket.on('confirmMessage',  data => {
+      //  this.confirmedMessage=data
+      //   console.log(this.confirmedMessage, 'confirmed message')
+      // })
     },
     chatHandler(status) {
       this.chatStatus = status;
@@ -595,6 +595,12 @@ export default {
       await this.socket.on("countOfOnlineUsers", (count) => {
         this.onlineCount = count;
       });
+      //? when it was at submit function / client couldn't recive first message befor sending message 
+      await this.socket.on('confirmMessage',  data => {
+       this.confirmedMessage=data
+        console.log(this.confirmedMessage, 'confirmed message')
+      })
+
     },
   },
   mounted() {

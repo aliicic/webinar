@@ -10,42 +10,6 @@
         </div>
       </div>
       <main class="msger-chat">
-        <!-- <div class="msg left-msg">
-          <div
-            class="msg-img"
-            style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)"
-          ></div>
-
-          <div class="msg-bubble">
-            <div class="msg-info">
-              <div class="msg-info-name">BOT</div>
-              <div class="msg-info-time">12:45</div>
-            </div>
-
-            <div class="msg-text">
-              Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
-            </div>
-          </div>
-        </div>
-
-        <div class="msg right-msg">
-          <div
-            class="msg-img"
-            style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
-          ></div>
-
-          <div class="msg-bubble">
-            <div class="msg-info">
-              <div class="msg-info-name">Sajad</div>
-              <div class="msg-info-time">12:46</div>
-            </div>
-
-            <div class="msg-text">
-              You can change your name in JS section!
-            </div>
-          </div>
-        </div> -->
-
         <div
           class="msg f-is"
           v-for="(message, index) in messages"
@@ -104,7 +68,16 @@
 <script>
 export default {
   name: "LiveChat",
-  props: ["confirmedMessage","oldMessages"],
+  // props: ["confirmedMessage", "oldMessages"],
+  props: {
+    confirmedMessage: {
+      type : Object
+    },
+    oldMessages: {
+      type: Array,
+      required: true
+    }
+  },
   data: () => ({
     sender:'',
     mobileChatStatus: false,
@@ -117,28 +90,29 @@ export default {
     messages: [],
   }),
   mounted() {
-    this.socket = this.$nuxtSocket({
-      channel: "/dynamic",
-      reconnection: false,
-    });
-    // console.log(this.oldMessages)
-    setTimeout(() => {
-     this.messages =this.oldMessages 
-    },1000)
+
+    // this.socket = this.$nuxtSocket({});
+
+     //? get old message from db
+    // this.getOldMessage()
+
+    // get chatbox element to scroll end of chat box every time after mounted
     this.msgerChat = document.getElementsByClassName("msger-chat")[0];
-    this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+    // this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+
+    //? get sender info from local strorage to set name and sender class for messages bubble
     this.sender = localStorage.getItem("name")
-    function get(selector, root = document) {
-      return root.querySelector(selector);
-    }
+
+
   },
-  watch:{
+  watch: {
+    //? client send message to server after that server send message again to all client ,after recive message from server confirmed messsage changes and watcher do this function
     confirmedMessage() {
       let today = new Date();
       let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       let time = today.getHours() + ":" + today.getMinutes()
       setTimeout(() => {
-         console.log(this.confirmedMessage, "chat")
+        // console.log(this.confirmedMessage, "chat")
         this.appendMessage(
         this.confirmedMessage.sender,
         this.PersonImg,
@@ -147,7 +121,11 @@ export default {
         time
       );
       },10)
-   }
+   },
+    async oldMessages(){
+     await this.messages.push(...this.oldMessages) 
+        this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+   },
   },
   methods: {
     LiveChatHandler() {
@@ -172,12 +150,23 @@ export default {
     },
 
     async submit() {
+      //? send message to server 
       if (!this.yourMessage) return;
       this.$emit("submit", this.yourMessage)
       this.yourMessage = "";
     },
 
+  //? this method needs to setm timeout for getting old message , and trasported to watch mothod to remove set timout function .
+  //  async getOldMessage() {
+  //      setTimeout(async () => {
+ 
+  //      await this.messages.push(...this.oldMessages) 
+  //       this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+     
+  //   }, 1000)
+  //   },
 
+    //? show received message to chatbotx
     async appendMessage(name, img, dir, msg, time) {
    
       await this.messages.push({

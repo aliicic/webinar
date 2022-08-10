@@ -588,7 +588,7 @@ export default {
     async roomInfo() {
       await this.socket.on("roomInfo", (roomInfo) => {
         this.roomName = roomInfo.name
-        // console.log(roomInfo.messages, 'rooooom')
+        // console.log(roomInfo, 'rooooom')
         this.messages = roomInfo.messages
         // console.log(this.roomName , 'this is roomname')
       });
@@ -597,7 +597,7 @@ export default {
       });
       //? when it was at submit function / client couldn't recive first message befor sending message 
       await this.socket.on('confirmMessage',  data => {
-       this.confirmedMessage=data
+       this.confirmedMessage=  data
         console.log(this.confirmedMessage, 'confirmed message')
       })
 

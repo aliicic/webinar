@@ -82,18 +82,18 @@ module.exports = class NamespaceSocketHandler {
           let today = new Date();
           // let date =today.getFullYear() +"-" +(today.getMonth() + 1) + "-" +today.getDate();
           let time = today.getHours() + ":" + today.getMinutes();
-            await ConversationModel.updateOne(
-              { endpoint, "rooms.name": roomName },
-              {
-                $push: {
-                  "rooms.$.messages": {
-                    name: sender,
-                    message,
-                    dateTime: time,
-                  },
-                },
-              }
-            );
+            // await ConversationModel.updateOne(
+            //   { endpoint, "rooms.name": roomName },
+            //   {
+            //     $push: {
+            //       "rooms.$.messages": {
+            //         name: sender,
+            //         message,
+            //         dateTime: time,
+            //       },
+            //     },
+            //   }
+            // );
             this.#io.of(`/${endpoint}`).in(roomName).emit("confirmMessage", data)
         })
     }

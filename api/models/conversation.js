@@ -3,7 +3,7 @@ const { default: mongoose } = require("mongoose");
 const messageSchema = new mongoose.Schema({
   name: { type: String },
   message: { type: String },
-  dateTime: { type: Number },
+  dateTime: { type: String },
 });
 
 const roomSchema = new mongoose.Schema({

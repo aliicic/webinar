@@ -183,9 +183,9 @@
                 <g></g>
               </svg>
             </div>
-            <h4 class="webinar-live__title"> {{userName}}</h4>
+            <h4 class="webinar-live__title">{{ userName }}</h4>
             <span class="webinar-live__badge ml-2 webinar-live__badge_purple">
-             {{ $nuxt._route.params.room }}
+              {{ $nuxt._route.params.room }}
             </span>
           </div>
 
@@ -468,19 +468,23 @@
                 </div>
               </div>
             </div>
-            <!-- <video
+            <video
               class="webinar-live-player__video"
+              id="local-video"
               poster="~/static/poster.jpg"
-            ></video> -->
-            <img src="~/static/poster.jpg" style="width: 100%" alt="" />
+              autoplay="autoplay"
+              :srcObject.prop="localStream"
+            ></video>
+            <!-- <img src="~/static/poster.jpg" style="width: 100%" alt="" /> -->
           </div>
         </div>
         <div class="col-lg-4 live-chat" style="flex: auto; overflow-y: auto">
-          <LiveChat 
-          @mobileChatStatus="chatHandler"
-           @submit="send" 
-           :confirmedMessage="confirmedMessage"
-           :oldMessages="messages" />
+          <LiveChat
+            @mobileChatStatus="chatHandler"
+            @submit="send"
+            :confirmedMessage="confirmedMessage"
+            :oldMessages="messages"
+          />
         </div>
       </div>
     </div>
@@ -495,6 +499,7 @@ export default {
   //   name: 'liveChat'
   // }
   data: () => ({
+    localStream : null,
     fullScreenFlag: false,
     idleTimer: null,
     idleState: false,
@@ -513,7 +518,7 @@ export default {
       await this.socket.emit('newMessage', {
         sender : this.userName,
         message,
-        roomName : this.roomName, 
+        roomName : this.roomName,
         endpoint : this.endpoint
       })
       // await this.socket.on('confirmMessage',  data => {
@@ -595,7 +600,7 @@ export default {
       await this.socket.on("countOfOnlineUsers", (count) => {
         this.onlineCount = count;
       });
-      //? when it was at submit function / client couldn't recive first message befor sending message 
+      //? when it was at submit function / client couldn't recive first message befor sending message
       await this.socket.on('confirmMessage',  data => {
        this.confirmedMessage=  data
         console.log(this.confirmedMessage, 'confirmed message')
@@ -604,15 +609,32 @@ export default {
     },
   },
   mounted() {
-    this.userName = localStorage.getItem("name")  
- 
-    this.socket = this.$nuxtSocket({
-      // nuxt-socket-io opts:
-      // name: "", // Use socket "home"
-      // channel: "", // connect to '/index'
-      // // socket.io-client opts:
-      // reconnection: false,
-    });
+    this.userName = localStorage.getItem("name")
+    this.socket = this.$nuxtSocket({});
+
+    //? WEBRTC
+    const { RTCPeerConnection, RTCSessionDescription } = window
+    console.log(RTCPeerConnection, 'from window')
+
+    const peerConnection = new RTCPeerConnection
+
+    navigator.getUserMedia(
+      {video: {width: 320, height: 180, facingMode: "user"} , audio : true}
+    ,
+      (stream) => {
+        //const localVideo = document.getElementById('local-video')
+        // if (localVideo) {
+          //console.log(localVideo)
+          this.localStream = stream;
+      //  }
+      },
+      (error) => {
+        console.log(error.message);
+      }
+    )
+
+
+    //?---------------------------------------------
 
     this.joinRoom();
     this.roomInfo();

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nodemon -w nuxt.config.js api/index.js",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
@@ -28,6 +28,7 @@
     "nuxt-socket-io": "^2.0.3",
     "sass": "^1.54.0",
     "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.2",
     "vue": "^2.6.14",
     "vue-scrollto": "^2.20.0",
     "vue-server-renderer": "^2.6.14",

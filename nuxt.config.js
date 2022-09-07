@@ -144,14 +144,13 @@ export default {
       {
         // At least one entry is required
         name: "home",
-        url: "http://localhost:4000/webinars",
+        url: "http://localhost:3001/webinars",
         default: true,
         // vuex: {
         //   /* see section below */
         // },
         // namespaces:"webinars",
       },
-
     ],
   },
 

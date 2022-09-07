@@ -40,6 +40,7 @@ module.exports = class NamespaceSocketHandler {
       endpoint: "webinars",
     };
     this.#io.of(`/${namespace.name}`).on("connection", async (socket) => {
+      console.log('yes this is working')
       const conversation = await ConversationModel.findOne(
         { endpoint: namespace.endpoint },
         { endpoint: 1, rooms: 1 }

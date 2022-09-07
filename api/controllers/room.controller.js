@@ -1,9 +1,8 @@
-const Controller = require("../controller");
 const { ConversationModel } = require("../models/conversation");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 const createHttpError = require("http-errors");
 const path = require("path")
-class RoomController extends Controller {
+class RoomController {
   async addRoom(req, res, next) {
     try {
       const { name, description, filename, fileUploadPath, namespace } = req.body;

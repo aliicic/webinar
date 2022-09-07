@@ -113,15 +113,6 @@ module.exports = class Application {
   createRoutes() {
     this.#app.use(AllRoutes);
   }
-  x() {
-    if (require.main === module) {
-      const port = process.env.PORT || 3001;
-      this.#app.listen(port, () => {
-        // eslint-disable-next-line no-console
-        console.log(`API server listening on port ${port}`);
-      });
-    }
-  }
   errorHandling() {
     this.#app.use((req, res, next) => {
       next(createError.NotFound("آدرس مورد نظر یافت نشد"));

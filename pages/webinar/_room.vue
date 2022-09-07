@@ -484,6 +484,7 @@
             @submit="send"
             :confirmedMessage="confirmedMessage"
             :oldMessages="messages"
+            :onlineUsers="onlineUsers"
           />
         </div>
       </div>
@@ -499,28 +500,29 @@ export default {
   //   name: 'liveChat'
   // }
   data: () => ({
-    localStream : null,
+    localStream: null,
     fullScreenFlag: false,
     idleTimer: null,
     idleState: false,
     isMute: false,
     chatStatus: false,
     onlineCount: 0,
+    onlineUsers : [],
     socket: null,
-    endpoint: 'webinars',
-    roomName: '',
+    endpoint: "webinars",
+    roomName: "",
     confirmedMessage: null,
-    userName: '',
-    messages : []
+    userName: "",
+    messages: [],
   }),
   methods: {
-   async send(message) {
-      await this.socket.emit('newMessage', {
-        sender : this.userName,
+    async send(message) {
+      await this.socket.emit("newMessage", {
+        sender: this.userName,
         message,
-        roomName : this.roomName,
-        endpoint : this.endpoint
-      })
+        roomName: this.roomName,
+        endpoint: this.endpoint,
+      });
       // await this.socket.on('confirmMessage',  data => {
       //  this.confirmedMessage=data
       //   console.log(this.confirmedMessage, 'confirmed message')
@@ -592,51 +594,53 @@ export default {
     },
     async roomInfo() {
       await this.socket.on("roomInfo", (roomInfo) => {
-        this.roomName = roomInfo.name
+        this.roomName = roomInfo.name;
         // console.log(roomInfo, 'rooooom')
-        this.messages = roomInfo.messages
+        this.messages = roomInfo.messages;
         // console.log(this.roomName , 'this is roomname')
       });
       await this.socket.on("countOfOnlineUsers", (count) => {
-        this.onlineCount = count;
+         console.log(count)
+        this.onlineCount = count.length;
+        this.onlineUsers = count
       });
       //? when it was at submit function / client couldn't recive first message befor sending message
-      await this.socket.on('confirmMessage',  data => {
-       this.confirmedMessage=  data
-        console.log(this.confirmedMessage, 'confirmed message')
-      })
-
+      await this.socket.on("confirmMessage", (data) => {
+        this.confirmedMessage = data;
+        console.log(this.confirmedMessage, "confirmed message");
+      });
     },
   },
-  mounted() {
-    this.userName = localStorage.getItem("name")
+  beforeMount() {
+    this.userName = localStorage.getItem("name");
+    console.log(this.userName)
     this.socket = this.$nuxtSocket({});
-
-    //? WEBRTC
-    const { RTCPeerConnection, RTCSessionDescription } = window
-    console.log(RTCPeerConnection, 'from window')
-
-    const peerConnection = new RTCPeerConnection
-
-    navigator.getUserMedia(
-      {video: {width: 320, height: 180, facingMode: "user"} , audio : true}
-    ,
-      (stream) => {
-        //const localVideo = document.getElementById('local-video')
-        // if (localVideo) {
-          //console.log(localVideo)
-          this.localStream = stream;
-      //  }
-      },
-      (error) => {
-        console.log(error.message);
-      }
-    )
-
+    this.socket.on("connect", () => {
+      this.socket.emit("joinRoom", {
+        roomName: this.$nuxt._route.params.room,
+        userName: this.userName
+      });
+    });
+  },
+  mounted() {
+    // navigator.getUserMedia(
+    //   {video: {width: 320, height: 180, facingMode: "user"} , audio : true}
+    // ,
+    //   (stream) => {
+    //     //const localVideo = document.getElementById('local-video')
+    //     // if (localVideo) {
+    //       //console.log(localVideo)
+    //       this.localStream = stream;
+    //   //  }
+    //   },
+    //   (error) => {
+    //     console.log(error.message);
+    //   }
+    // )
 
     //?---------------------------------------------
 
-    this.joinRoom();
+    // this.joinRoom();
     this.roomInfo();
     this.overLayController(3000); //? time to disappear over-lay first time
 

@@ -5,68 +5,76 @@
       <div class="msger-header">
         <div class="msger-header-title">چت گروهی</div>
         <div class="msger-header-options">
-          <span class="messages" @click="tab = !tab">پیام ها</span>
-          <span class="members" @click="tab = !tab">شرکت کنندگان</span>
+          <span class="messages" @click="messagerTab = true">پیام ها</span>
+          <span class="members" @click="messagerTab = false">شرکت کنندگان</span>
         </div>
       </div>
-      <template v-if="tab">
-        <main class="msger-chat">
-          <div
-            class="msg f-is"
-            v-for="(message, index) in messages"
-            :key="index"
-            :class="[
-              { 'right-msg': sender !== message.name },
-              { 'left-msg': sender === message.name },
-            ]"
-          >
-            <div class="msg-img" style="background: url('/person.jpg')"></div>
 
-            <div class="msg-bubble">
-              <div class="msg-info">
-                <div class="msg-info-name">{{ message.name }}</div>
-                <div class="msg-info-time">{{ message.dateTime }}</div>
-              </div>
-              <div class="msg-text">
-                {{ message.message }}
-              </div>
+      <main v-show="messagerTab" class="msger-chat" id="msger-chat">
+        <div
+          class="msg f-is"
+          v-for="(message, index) in messages"
+          :key="index"
+          :class="[
+            { 'right-msg': sender !== message.name },
+            { 'left-msg': sender === message.name },
+          ]"
+        >
+          <div class="msg-img" style="background: url('/person.jpg')"></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">{{ message.name }}</div>
+              <div class="msg-info-time">{{ message.dateTime }}</div>
+            </div>
+            <div class="msg-text">
+              {{ message.message }}
             </div>
           </div>
-        </main>
-        <p class="istyping">{{ typing }}</p>
-        <form class="msger-inputarea">
-          <input
-            type="text"
-            class="msger-input"
-            placeholder="پیام خود را وارد کنید"
-            v-model="yourMessage"
-            @keyup="handle()"
-          />
-          <button class="msger-send-btn" @click.prevent="submit">
-            <svg
-              style="height: 40px; width: 40px; color: rgb(255, 255, 255)"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-cursor-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"
-                fill="#ffffff"
-              ></path>
-            </svg>
-          </button>
-        </form>
-      </template>
-      <template v-else>
-        <div class="msger-chat" style="margin-top: 100px">
-          <ul>
-            <li v-for="(item,index) in onlineUsers" :key="index">{{item.name}}</li>
-          </ul>
         </div>
-      </template>
+      </main>
+      <p v-show="messagerTab" class="istyping">{{ typing }}</p>
+      <form v-show="messagerTab" class="msger-inputarea">
+        <input
+          type="text"
+          class="msger-input"
+          placeholder="پیام خود را وارد کنید"
+          v-model="yourMessage"
+          @keyup="handle()"
+        />
+        <button class="msger-send-btn" @click.prevent="submit">
+          <svg
+            style="height: 40px; width: 40px; color: rgb(255, 255, 255)"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-cursor-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"
+              fill="#ffffff"
+            ></path>
+          </svg>
+        </button>
+      </form>
+
+      <div
+        v-show="messagerTab == false"
+        class="msger-chat"
+        style="margin-top: 100px"
+      >
+        <ul>
+          <li
+            v-for="(item, index) in onlineUsers"
+            :key="index"
+            @click="chooseUser(item.name, item.id)"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
     </section>
   </div>
 </template>
@@ -86,9 +94,12 @@ export default {
     onlineUsers: {
       type: Array,
     },
+    chooseUser: {
+      type: Function,
+    },
   },
   data: () => ({
-    tab: true,
+    messagerTab: true,
     sender: "",
     mobileChatStatus: false,
     yourMessage: "",
@@ -100,14 +111,7 @@ export default {
     messages: [],
   }),
   mounted() {
-    // this.socket = this.$nuxtSocket({});
-
-    //? get old message from db
-    // this.getOldMessage()
-
-    // get chatbox element to scroll end of chat box every time after mounted
-    this.msgerChat = document.getElementsByClassName("msger-chat")[0];
-    // this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
+    this.scrollToEnd();
 
     //? get sender info from local strorage to set name and sender class for messages bubble
     this.sender = localStorage.getItem("name");
@@ -190,6 +194,7 @@ export default {
       await this.scrollToEnd();
     },
     scrollToEnd() {
+      this.msgerChat = document.getElementById("msger-chat");
       this.msgerChat.scrollTop = this.msgerChat.scrollHeight;
     },
   },

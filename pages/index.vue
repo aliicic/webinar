@@ -24,7 +24,7 @@ export default {
 
   methods: {
     login() {
-      fetch("http://localhost:4000/support/login", {
+      fetch("http://localhost:3000/api/login", {
         // Adding method type
         method: "POST",
         // Adding body or contents to send

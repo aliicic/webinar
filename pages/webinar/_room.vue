@@ -184,7 +184,10 @@
               </svg>
             </div>
             <h4 class="webinar-live__title">{{ userName }}</h4>
-            <span class="webinar-live__badge ml-2 webinar-live__badge_purple">
+            <span
+              @click="connect()"
+              class="webinar-live__badge ml-2 webinar-live__badge_purple"
+            >
               {{ $nuxt._route.params.room }}
             </span>
           </div>
@@ -261,221 +264,15 @@
             </div>
           </div>
 
-          <div
+          <!-- <div
             id="video-container"
             @mousemove="overLayController(3000)"
             class="webinar-live-player"
-          >
-            <div id="over-lay" class="webinar-live-player__overlay">
-              <div class="webinar-live-player__header">
-                <div class="webinar-live-player__publisher">
-                  <div class="img-frame">
-                    <img src="~/static/person.jpg" alt="" />
-                  </div>
-                  <div class="content">
-                    <span>سخنران</span>
-                    <h5>علی آقاخانی</h5>
-                  </div>
-                </div>
-                <!-- <div class="webinar-live-player__timer f-is">
-                  <span> 10:00 </span>
-                </div> -->
-              </div>
-              <div class="webinar-live-player__footer">
-                <div style="width: 147px" class="d-none d-lg-block"></div>
-                <div class="webinar-live-player__controlbox">
-                  <span
-                    @click="fullScreen"
-                    class="wbinar-live-player__full-screen"
-                  >
-                    <svg
-                      v-if="!fullScreenFlag"
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-arrows-fullscreen"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                    <svg
-                      v-if="fullScreenFlag"
-                      style="color: white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      class="bi bi-fullscreen-exit"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"
-                        fill="white"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="wbinar-live-player__call">
-                    <svg
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-telephone"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span
-                    @click="isMute = !isMute"
-                    class="wbinar-live-player__mute"
-                  >
-                    <svg
-                      v-if="!isMute"
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-mic-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"
-                        fill="#ffffff"
-                      ></path>
-                      <path
-                        d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                    <svg
-                      v-if="isMute"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="currentColor"
-                      class="bi bi-mic-mute-fill"
-                      viewBox="0 0 16 16"
-                      id="IconChangeColor"
-                    >
-                      <path
-                        d="M13 8c0 .564-.094 1.107-.266 1.613l-.814-.814A4.02 4.02 0 0 0 12 8V7a.5.5 0 0 1 1 0v1zm-5 4c.818 0 1.578-.245 2.212-.667l.718.719a4.973 4.973 0 0 1-2.43.923V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 1 0v1a4 4 0 0 0 4 4zm3-9v4.879L5.158 2.037A3.001 3.001 0 0 1 11 3z"
-                        id="mainIconPathAttribute"
-                        fill="#ffffff"
-                      ></path>
-                      <path
-                        d="M9.486 10.607 5 6.12V8a3 3 0 0 0 4.486 2.607zm-7.84-9.253 12 12 .708-.708-12-12-.708.708z"
-                        id="mainIconPathAttribute"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="wbinar-live-player__camera">
-                    <svg
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-camera-video-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="wbinar-live-player__setting">
-                    <svg
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-pin-angle-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                  </span>
-                </div>
-                <div class="webinar-live-player__valume-control">
-                  <span>
-                    <svg
-                      style="
-                        height: 20px;
-                        width: 20px;
-                        color: rgb(255, 255, 255);
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-volume-up-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
-                        fill="#ffffff"
-                      ></path>
-                      <path
-                        d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
-                        fill="#ffffff"
-                      ></path>
-                      <path
-                        d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                  </span>
-                  <input type="range" />
-                </div>
-              </div>
+          > -->
+          <div id="video-container" class="webinar-live-player">
+            <div id="remote_videos">
+              <div class="videos-inner"></div>
             </div>
-            <video
-              class="webinar-live-player__video"
-              id="local-video"
-              poster="~/static/poster.jpg"
-              autoplay="autoplay"
-              :srcObject.prop="localStream"
-            ></video>
-            <!-- <img src="~/static/poster.jpg" style="width: 100%" alt="" /> -->
           </div>
         </div>
         <div class="col-lg-4 live-chat" style="flex: auto; overflow-y: auto">
@@ -485,6 +282,7 @@
             :confirmedMessage="confirmedMessage"
             :oldMessages="messages"
             :onlineUsers="onlineUsers"
+            :chooseUser="chooseUser"
           />
         </div>
       </div>
@@ -493,6 +291,7 @@
 </template>
 
 <script>
+let peer = null;
 export default {
   layout: "blank",
 
@@ -507,13 +306,32 @@ export default {
     isMute: false,
     chatStatus: false,
     onlineCount: 0,
-    onlineUsers : [],
+    onlineUsers: [],
     socket: null,
     endpoint: "webinars",
     roomName: "",
     confirmedMessage: null,
     userName: "",
     messages: [],
+    //
+
+    configuration: {
+      iceServers: [
+        { urls: "stun:stun.stunprotocol.org:3478" },
+        { urls: "stun:stun.l.google.com:19302" },
+        {
+          urls: ["turn:13.250.13.83:3478?transport=udp"],
+          username: "YzYNCouZM1mhqhmseWk6",
+          credential: "YzYNCouZM1mhqhmseWk6",
+        },
+      ],
+    },
+    localUUID: null,
+    localStream: null,
+    connection: null,
+    consumers: new Map(),
+    clients: new Map(),
+    remoteContainer:null
   }),
   methods: {
     async send(message) {
@@ -576,22 +394,19 @@ export default {
     //   // }
     // },
 
-    overLayController(time) {
-      clearTimeout(this.idleTimer);
-      if (this.idleState == true) {
-        // $("#foo").removeClass("inactive");
-        document.getElementById("over-lay").style.opacity = 1;
-      }
-      this.idleState = false;
-      this.idleTimer = setTimeout(() => {
-        document.getElementById("over-lay").style.opacity = 0;
-        this.idleState = true;
-      }, time);
-    },
+    // overLayController(time) {
+    //   clearTimeout(this.idleTimer);
+    //   if (this.idleState == true) {
+    //     // $("#foo").removeClass("inactive");
+    //     document.getElementById("over-lay").style.opacity = 1;
+    //   }
+    //   this.idleState = false;
+    //   this.idleTimer = setTimeout(() => {
+    //     document.getElementById("over-lay").style.opacity = 0;
+    //     this.idleState = true;
+    //   }, time);
+    // },
 
-    async joinRoom() {
-      await this.socket.emit("joinRoom", this.$nuxt._route.params.room);
-    },
     async roomInfo() {
       await this.socket.on("roomInfo", (roomInfo) => {
         this.roomName = roomInfo.name;
@@ -600,9 +415,9 @@ export default {
         // console.log(this.roomName , 'this is roomname')
       });
       await this.socket.on("countOfOnlineUsers", (count) => {
-         console.log(count)
+        console.log(count);
         this.onlineCount = count.length;
-        this.onlineUsers = count
+        this.onlineUsers = count;
       });
       //? when it was at submit function / client couldn't recive first message befor sending message
       await this.socket.on("confirmMessage", (data) => {
@@ -610,39 +425,384 @@ export default {
         console.log(this.confirmedMessage, "confirmed message");
       });
     },
+    async choosedUserToCall() {
+      await this.socket.on("choosed-to-call", async (data) => {
+        //console.log("heyyyy");
+          let constraint = {
+            audio: true,
+            video: {
+              mandatory: {
+                width: { min: 320 },
+                height: { min: 180 },
+              },
+              optional: [
+                { width: { max: 1280 } },
+                { frameRate: 30 },
+                { facingMode: "user" },
+              ],
+            },
+          };
+          let stream = await navigator.mediaDevices.getUserMedia(constraint);
+          this.handleRemoteTrack(stream, username.value);
+          this.localStream = stream;
+
+          peer = this.createPeer();
+          this.localStream
+            .getTracks()
+            .forEach((track) => peer.addTrack(track, this.localStream));
+          //  await subscribe();
+      });
+    },
+
+    //? import from advanced webrtc project
+
+    chooseUser(username, id) {
+      //alert(id)
+      // if (nickname != "admin") return;
+      let payload = {
+        name: username,
+        id: id,
+      };
+      this.socket.emit("choose-user", payload);
+    },
+
+    async init() {
+      console.log("window loaded");
+
+      this.socket.on("connect", (e) => {
+        console.log("socket connected");
+        console.log(socket.id, "socket");
+        connectBtn.disabled = false;
+      });
+      socket.on("disconnect", (e) => {
+        console.log("socket desconnected");
+        handleClose;
+      });
+      // this.socket.on("message", (e) => {
+      //   console.log("socket message");
+      //   this.handleMessage(e);
+      // });
+    },
+    recalculateLayout() {
+      let container = this.remoteContainer;
+      let videoContainer = document.querySelector(".videos-inner");
+      let videoCount = container.querySelectorAll(".videoWrap").length;
+
+      if (videoCount >= 3) {
+        videoContainer.style.setProperty("--grow", 0 + "");
+      } else {
+        videoContainer.style.setProperty("--grow", 1 + "");
+      }
+    },
+
+    uuidv4() {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+        /[xy]/g,
+        function (c) {
+          var r = (Math.random() * 16) | 0,
+            v = c == "x" ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        }
+      );
+    },
+
+    findUserVideo(username) {
+      return document.querySelector(`#remote_${username}`);
+    },
+
+    async handleRemoteTrack(stream, username) {
+      let userVideo = this.findUserVideo(username);
+      if (userVideo) {
+        userVideo.srcObject.addTrack(stream.getTracks()[0]);
+      } else {
+        let video = document.createElement("video");
+        video.id = `remote_${username}`;
+        video.srcObject = stream;
+        video.autoplay = true;
+        video.muted = username == this.userName;
+
+        let div = document.createElement("div");
+        div.id = `user_${username}`;
+        div.classList.add("videoWrap");
+
+        let nameContainer = document.createElement("div");
+        nameContainer.classList.add("display_name");
+        let textNode = document.createTextNode(username);
+        nameContainer.appendChild(textNode);
+        div.appendChild(nameContainer);
+        div.appendChild(video);
+        document.querySelector(".videos-inner").appendChild(div);
+      }
+
+      this.recalculateLayout();
+    },
+
+    async handleIceCandidate({ candidate }) {
+      if (candidate && candidate.candidate && candidate.candidate.length > 0) {
+        let payload = {
+          type: "ice",
+          ice: candidate,
+          uqid: this.localUUID,
+        };
+        this.socket.emit("message", payload);
+      }
+    },
+
+    async checkPeerConnection(e) {
+      var state = peer.iceConnectionState;
+      if (
+        state === "failed" ||
+        state === "closed" ||
+        state === "disconnected"
+      ) {
+      }
+    },
+
+    handleConsumerIceCandidate(e, id, consumerId) {
+      let { candidate } = e;
+      if (candidate && candidate.candidate && candidate.candidate.length > 0) {
+        let payload = {
+          type: "consumer_ice",
+          ice: candidate,
+          uqid: id,
+          consumerId,
+        };
+        this.socket.emit("message", payload);
+      }
+    },
+
+    handleConsume({ sdp, id, consumerId }) {
+      let desc = new RTCSessionDescription(sdp);
+      this.consumers
+        .get(consumerId)
+        .setRemoteDescription(desc)
+        .catch((e) => console.log(e));
+    },
+
+    async createConsumeTransport(peer) {
+      let consumerId = this.uuidv4();
+      console.log(peer.id, "peer id");
+      console.log(consumerId, "peer id");
+      let consumerTransport = new RTCPeerConnection(this.configuration);
+      this.clients.get(peer.id).consumerId = consumerId;
+      consumerTransport.id = consumerId;
+      consumerTransport.peer = peer;
+      this.consumers.set(consumerId, consumerTransport);
+      this.consumers
+        .get(consumerId)
+        .addTransceiver("video", { direction: "recvonly" });
+      this.consumers
+        .get(consumerId)
+        .addTransceiver("audio", { direction: "recvonly" });
+      let offer = await this.consumers.get(consumerId).createOffer();
+      await this.consumers.get(consumerId).setLocalDescription(offer);
+
+      this.consumers.get(consumerId).onicecandidate = (e) =>
+        this.handleConsumerIceCandidate(e, peer.id, consumerId);
+
+      this.consumers.get(consumerId).ontrack = (e) => {
+        this.handleRemoteTrack(e.streams[0], peer.username);
+      };
+
+      return consumerTransport;
+    },
+
+    async consumeOnce(peer) {
+      let transport = await this.createConsumeTransport(peer);
+      let payload = {
+        type: "consume",
+        id: peer.id,
+        consumerId: transport.id,
+        sdp: await transport.localDescription,
+      };
+
+      this.socket.emit("message", payload);
+    },
+
+    async handlePeers({ peers }) {
+      if (peers.length > 0) {
+        for (let peer in peers) {
+          this.clients.set(peers[peer].id, peers[peer]);
+          console.log("are ejra mishe");
+          await this.consumeOnce(peers[peer]);
+        }
+      }
+    },
+
+    handleAnswer({ sdp }) {
+      let desc = new RTCSessionDescription(sdp);
+      peer.setRemoteDescription(desc).catch((e) => console.log(e));
+    },
+
+    async handleNewProducer({ id, username }) {
+      if (id === this.localUUID) return;
+
+      console.log("consuming", id);
+      this.clients.set(id, { id, username });
+
+      await this.consumeOnce({ id, username });
+    },
+
+    handleMessage(data) {
+      let message = data;
+      //console.log(message);
+      switch (message.type) {
+        case "welcome":
+          this.localUUID = message.id;
+          break;
+        case "answer":
+          this.handleAnswer(message);
+          break;
+        case "peers":
+          this.handlePeers(message);
+          break;
+        case "consume":
+          this.handleConsume(message);
+          break;
+        case "newProducer":
+          this.handleNewProducer(message);
+          break;
+        case "user_left":
+          this.removeUser(message);
+          break;
+      }
+    },
+
+    removeUser({ id }) {
+      if (this.clients.get(id)) {
+        console.log(this.clients.get(id));
+        let { username, consumerId } = this.clients.get(id);
+        this.consumers.delete(consumerId);
+        this.clients.delete(id);
+        document
+          .querySelector(`#remote_${username}`)
+          .srcObject.getTracks()
+          .forEach((track) => track.stop());
+        document.querySelector(`#user_${username}`).remove();
+
+        this.recalculateLayout();
+      }
+    },
+
+    async connect() {
+      //Produce media
+      if (this.userName == "ali") {
+        let constraint = {
+          audio: true,
+          video: {
+            mandatory: {
+              width: { min: 320 },
+              height: { min: 180 },
+            },
+            optional: [
+              { width: { max: 1280 } },
+              { frameRate: 30 },
+              { facingMode: "user" },
+            ],
+          },
+        };
+        let stream = await navigator.mediaDevices.getUserMedia(constraint);
+        this.handleRemoteTrack(stream, this.userName);
+        this.localStream = stream;
+
+        peer = this.createPeer();
+        this.localStream
+          .getTracks()
+          .forEach((track) => peer.addTrack(track, this.localStream));
+        await this.subscribe();
+      } else {
+        //createPeer();
+        await this.subscribe();
+      }
+      console.log(this.clients);
+      console.log(this.consumers);
+    },
+
+    handleClose() {
+      this.connection = null;
+      this.localStream.getTracks().forEach((track) => track.stop());
+      this.clients = null;
+      this.consumers = null;
+    },
+
+    createPeer() {
+      peer = new RTCPeerConnection(this.configuration);
+      console.log(peer);
+      peer.onicecandidate = this.handleIceCandidate;
+
+      peer.onnegotiationneeded = () => this.handleNegotiation(peer);
+      return peer;
+    },
+
+    async handleNegotiation(peer, type) {
+      console.log("*** negoitating ***");
+      let offer = await peer.createOffer();
+      await peer.setLocalDescription(offer);
+
+      this.socket.emit("message", {
+        type: "connect",
+        sdp: peer.localDescription,
+        uqid: this.localUUID,
+        username: this.userName,
+      });
+    },
+
+    async subscribe() {
+      // Consume media
+      await this.consumeAll();
+    },
+
+    async consumeAll() {
+      // console.log(this.localUUID, 'peeeeerssss')
+      let payload = {
+        type: "getPeers",
+        uqid: this.localUUID,
+      };
+
+      this.socket.emit("message", payload);
+    },
   },
   beforeMount() {
     this.userName = localStorage.getItem("name");
-    console.log(this.userName)
+    console.log(this.userName);
     this.socket = this.$nuxtSocket({});
     this.socket.on("connect", () => {
       this.socket.emit("joinRoom", {
         roomName: this.$nuxt._route.params.room,
-        userName: this.userName
+        userName: this.userName,
       });
     });
   },
   mounted() {
-    // navigator.getUserMedia(
-    //   {video: {width: 320, height: 180, facingMode: "user"} , audio : true}
-    // ,
+    this.remoteContainer = document.querySelector("#remote_videos");
+    // try {
+    //   navigator.getUserMedia(
+    //   { video: { width: 320, height: 180, facingMode: "user" }, audio: false },
     //   (stream) => {
     //     //const localVideo = document.getElementById('local-video')
     //     // if (localVideo) {
-    //       //console.log(localVideo)
-    //       this.localStream = stream;
-    //   //  }
+    //     //console.log(localVideo)
+    //     this.localStream = stream;
+    //     //  }
     //   },
     //   (error) => {
     //     console.log(error.message);
     //   }
-    // )
+    // );
+    // } catch (e) {
+    //        console.log(e)
+    // }
 
     //?---------------------------------------------
 
     // this.joinRoom();
     this.roomInfo();
-    this.overLayController(3000); //? time to disappear over-lay first time
+    this.choosedUserToCall();
+    this.socket.on("message", (e) => {
+      console.log("socket message");
+      this.handleMessage(e);
+    });
+    // this.overLayController(3000); //? time to disappear over-lay first time
 
     //? for calc urlbar and navigator in mobile & tablet devices
     window.addEventListener("resize", () => {
@@ -886,7 +1046,7 @@ body {
     height: 100%;
     border-radius: 15px;
     &[poster] {
-      height: 100%;
+      //  height: 100%;
       object-fit: cover;
     }
   }

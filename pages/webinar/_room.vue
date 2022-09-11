@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div class="container-fluid" style="direction:rtl">
       <div class="row webinar-live">
         <div class="col-lg-1 webinar-live__tab" :class="{ hidden: chatStatus }">
           <div class="webinar-live__logo">
             <img src="~/static/icon.png" alt="" />
           </div>
-          <div class="webinar-live__tabs-box d-none">
+          <div class="webinar-live__tabs-box">
             <div class="webinar-live__tabs">
               <svg
                 style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
@@ -27,7 +27,7 @@
                 ></path>
               </svg>
             </div>
-            <div class="webinar-live__tabs">
+            <div @click="fullScreen()" class="webinar-live__tabs">
               <svg
                 style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +271,22 @@
           > -->
           <div id="video-container" class="webinar-live-player">
             <div id="remote_videos">
-              <div class="videos-inner"></div>
+              <div class="videos-inner">
+                <div
+                  v-for="(item, index) in videos"
+                  :key="index"
+                  :id="`user_${item.id}`"
+                  class="videoWrap"
+                >
+                  <div class="display_name">{{ item.id }}</div>
+                  <video
+                    :srcObject.prop="item.src"
+                    autoplay
+                    muted
+                    :id="`remote_${item.id}`"
+                  ></video>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -332,6 +347,7 @@ export default {
     consumers: new Map(),
     clients: new Map(),
     remoteContainer: null,
+    videos: [],
   }),
   methods: {
     async send(message) {
@@ -431,15 +447,11 @@ export default {
         let constraint = {
           audio: true,
           video: {
-            mandatory: {
-              width: { min: 320 },
-              height: { min: 180 },
-            },
-            optional: [
-              { width: { max: 1280 } },
-              { frameRate: 30 },
-              { facingMode: "user" },
-            ],
+            width: { min: 320, ideal: 640, max: 1920 },
+            height: { min: 180, ideal: 400 },
+            aspectRatio: 1.777777778,
+            frameRate: { max: 30 },
+            facingMode: { exact: "user" },
           },
         };
         let stream = await navigator.mediaDevices.getUserMedia(constraint);
@@ -474,10 +486,10 @@ export default {
         console.log(socket.id, "socket");
         connectBtn.disabled = false;
       });
-      socket.on("disconnect", (e) => {
-        console.log("socket desconnected");
-        handleClose;
-      });
+      // socket.on("disconnect", (e) => {
+      //   console.log("socket desconnected");
+      //   this.handleClose;
+      // });
       // this.socket.on("message", (e) => {
       //   console.log("socket message");
       //   this.handleMessage(e);
@@ -515,24 +527,27 @@ export default {
       if (userVideo) {
         userVideo.srcObject.addTrack(stream.getTracks()[0]);
       } else {
-        let video = document.createElement("video");
-        video.id = `remote_${username}`;
-        video.style.width="100%"
-        video.srcObject = stream;
-        video.autoplay = true;
-        video.muted = username == this.userName;
+        // let video = document.createElement("video");
+        // video.id = `remote_${username}`;
+        // video.style.width="100%"
+        // video.srcObject = stream;
+        // video.autoplay = true;
+        // video.muted = username == this.userName;
 
-        let div = document.createElement("div");
-        div.id = `user_${username}`;
-        div.classList.add("videoWrap");
-        div.style.width="100%"
-        let nameContainer = document.createElement("div");
-        nameContainer.classList.add("display_name");
-        let textNode = document.createTextNode(username);
-        nameContainer.appendChild(textNode);
-        div.appendChild(nameContainer);
-        div.appendChild(video);
-        document.querySelector(".videos-inner").appendChild(div);
+        let video = { id: username, src: stream };
+        this.videos.push(video);
+
+        // let div = document.createElement("div");
+        // div.id = `user_${username}`;
+        // div.classList.add("videoWrap");
+        // div.style.width="100%"
+        // let nameContainer = document.createElement("div");
+        // nameContainer.classList.add("display_name");
+        // let textNode = document.createTextNode(username);
+        // nameContainer.appendChild(textNode);
+        // div.appendChild(nameContainer);
+        // div.appendChild(video);
+        // document.querySelector(".videos-inner").appendChild(div);
       }
 
       //this.recalculateLayout();
@@ -691,15 +706,13 @@ export default {
         let constraint = {
           audio: true,
           video: {
-            mandatory: {
-              width: { min: 320 },
-              height: { min: 180 },
-            },
-            optional: [
-              { width: { max: 1280 } },
-              { frameRate: 30 },
-              { facingMode: "user" },
-            ],
+         
+            width: { min: 320, ideal: 640, max: 1920 },
+            height: { min: 180, ideal: 400 },
+            aspectRatio: 1.777777778,
+            frameRate: { max: 30 },
+            facingMode: { exact: "user" },
+          
           },
         };
         let stream = await navigator.mediaDevices.getUserMedia(constraint);
@@ -802,6 +815,10 @@ export default {
     this.socket.on("message", (e) => {
       console.log("socket message");
       this.handleMessage(e);
+    });
+    this.socket.on("disconnect", (e) => {
+      console.log("socket desconnected");
+      this.handleClose;
     });
     // this.overLayController(3000); //? time to disappear over-lay first time
 
@@ -1263,26 +1280,46 @@ body {
 
 #remote_videos {
   width: 100%;
-  height: 750px;
-  margin: 20px auto;
+  height: 100%;
+  // margin: 20px auto;
 }
 
 .videos-inner {
   width: 100%;
   display: flex;
   gap: 1.2rem;
-  justify-content:center;
+  justify-content: center;
 }
 
 .videos-inner .videoWrap {
-  width:100%!important;
+  width: 100% !important;
+  border-radius: 20px;
+  position: relative;
 }
 
 .videos-inner .videoWrap video {
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px!important;
+  width: 100% !important;
+  // height: 100%;
+  border-radius: 20px !important;
 }
-
-
+.videos-inner .display_name {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.8rem 1.5rem;
+  color: white;
+  font-weight: bold;
+  font-family: Arial;
+  border-radius: 20px;
+  max-width: 98%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  z-index: 2;
+  font-size: 0.95rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+}
 </style>

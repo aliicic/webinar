@@ -34,11 +34,10 @@ module.exports = class NamespaceSocketHandler {
     //   endpoint: "webinars",
     // };
     this.#io.of(`/${namespace.name}`).on("connection", async (socket) => {
-     
       console.log("socket server is running");
- 
+
       let peerId = uuidv4();
-      console.log(peerId ,"peer id");
+      console.log(peerId, "peer id");
       const conversation = await ConversationModel.findOne(
         { endpoint: namespace.endpoint },
         { endpoint: 1, rooms: 1 }
@@ -48,7 +47,7 @@ module.exports = class NamespaceSocketHandler {
       socket.on("joinRoom", async (data) => {
         const roomName = data.roomName;
         const userName = data.userName;
-      
+
         totalUsers.push({ name: userName, id: socket.id, roomName: roomName });
         console.log(data);
         const lastRoom = Array.from(socket.rooms)[1];
@@ -68,6 +67,7 @@ module.exports = class NamespaceSocketHandler {
         socket.emit("roomInfo", roomInfo);
         this.getNewMessage(socket);
         socket.on("disconnect", async () => {
+          this.handleClose(peerId, socket);
           await this.getCountOfOnlineUsers(namespace.endpoint);
           totalUsers.map((item, index) => {
             if (item.id === socket.id) totalUsers.splice(index, 1);
@@ -81,14 +81,14 @@ module.exports = class NamespaceSocketHandler {
       socket.on("message", async (message) => {
         // this.test();
         const body = message;
-      
+
         switch (body.type) {
           case "connect":
             peers.set(body.uqid, { socket });
             // console.log(x)
             console.log(peers.get(body.uqid), "this is body");
             const peer = this.createPeer();
-         
+
             peers.get(body.uqid).username = body.username;
             peers.get(body.uqid).peer = peer;
             peer.ontrack = (e) => {
@@ -173,9 +173,7 @@ module.exports = class NamespaceSocketHandler {
             }
             break;
           default:
-            socket.broadcast
-              .to("room1")
-              .emit(message);
+            socket.broadcast.to("room1").emit(message);
         }
       });
       this.#io.on("error", () => io.terminate());
@@ -189,6 +187,20 @@ module.exports = class NamespaceSocketHandler {
       .allSockets();
     const total = totalUsers.filter((item) => item.roomName == roomName);
     this.#io.of(`/${endpoint}`).in(roomName).emit("countOfOnlineUsers", total);
+  }
+  handleClose(peerId, socket) {
+    console.log(peerId, "disconnected");
+    peers.delete(peerId);
+    consumers.delete(peerId);
+    // activeUsers.map((item, index) => {
+    //   if (item.id === socket.id) activeUsers.splice(index, 1);
+    // });
+    // //console.log(activeUsers);
+    // io.emit("userList", activeUsers);
+    socket.broadcast.to("room1").emit("message", {
+      type: "user_left",
+      id: peerId,
+    });
   }
   initConnection() {
     this.#io.on("connection", async (socket) => {
@@ -215,9 +227,7 @@ module.exports = class NamespaceSocketHandler {
         id: peer,
         username: peers.get(peer).username,
       };
-      socket.broadcast
-        .to("room1")
-        .emit("message", payload);
+      socket.broadcast.to("room1").emit("message", payload);
     }
   }
   createPeer() {

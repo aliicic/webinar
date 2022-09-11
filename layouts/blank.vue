@@ -7,11 +7,7 @@ export default {
  head() {
     return {
       link: [
-        // {
-        //   rel: "icon",
-        //   type: "image/x-icon",
-        //   href: "/favicon.png"
-        // },
+      
         {
           rel: "stylesheet",
           href:
@@ -22,46 +18,19 @@ export default {
           rel: "stylesheet",
           href: "/css/style.css"
         },
+     
         // {
         //   rel: "stylesheet",
-        //   href: "/css/responsive.css"
-        // },
-        {
-          rel: "stylesheet",
-          href: "/t22/style.css"
-        }
+        //   href: "/t22/style.css"
+        // }
       ],
-      // script: [
-      //   {
-      //     src: "/js/jquery.min.js",
-      //     defer: true
-      //     // body: true
-      //   },
-      //   {
-      //     src: "/js/bootstrap.min.js",
-      //     defer: true,
-      //     body: true
-      //   },
-      //   {
-      //     src: "/js/popper.min.js",
-      //     defer: true,
-      //     body: true
-      //   },
-      //   {
-      //     src: "/js/slick/slick.min.js",
-      //     defer: true,
-      //     body: true
-      //   },
-      //   { src: "/js/mml/mml.js", defer: true },
-      //   {
-      //     src: "/js/main.js",
-      //     defer: true,
-      //     body: true
-      //   }
-      // ]
     };
   }
 }
 </script>
 
-<style></style>
+<style>
+  body{
+    direction: ltr!important ;
+  }
+</style>

@@ -331,7 +331,7 @@ export default {
     connection: null,
     consumers: new Map(),
     clients: new Map(),
-    remoteContainer:null
+    remoteContainer: null,
   }),
   methods: {
     async send(message) {
@@ -428,29 +428,29 @@ export default {
     async choosedUserToCall() {
       await this.socket.on("choosed-to-call", async (data) => {
         //console.log("heyyyy");
-          let constraint = {
-            audio: true,
-            video: {
-              mandatory: {
-                width: { min: 320 },
-                height: { min: 180 },
-              },
-              optional: [
-                { width: { max: 1280 } },
-                { frameRate: 30 },
-                { facingMode: "user" },
-              ],
+        let constraint = {
+          audio: true,
+          video: {
+            mandatory: {
+              width: { min: 320 },
+              height: { min: 180 },
             },
-          };
-          let stream = await navigator.mediaDevices.getUserMedia(constraint);
-          this.handleRemoteTrack(stream, username.value);
-          this.localStream = stream;
+            optional: [
+              { width: { max: 1280 } },
+              { frameRate: 30 },
+              { facingMode: "user" },
+            ],
+          },
+        };
+        let stream = await navigator.mediaDevices.getUserMedia(constraint);
+        this.handleRemoteTrack(stream, this.userName);
+        this.localStream = stream;
 
-          peer = this.createPeer();
-          this.localStream
-            .getTracks()
-            .forEach((track) => peer.addTrack(track, this.localStream));
-          //  await subscribe();
+        peer = this.createPeer();
+        this.localStream
+          .getTracks()
+          .forEach((track) => peer.addTrack(track, this.localStream));
+        //  await subscribe();
       });
     },
 
@@ -483,17 +483,17 @@ export default {
       //   this.handleMessage(e);
       // });
     },
-    recalculateLayout() {
-      let container = this.remoteContainer;
-      let videoContainer = document.querySelector(".videos-inner");
-      let videoCount = container.querySelectorAll(".videoWrap").length;
+    // recalculateLayout() {
+    //   let container = this.remoteContainer;
+    //   let videoContainer = document.querySelector(".videos-inner");
+    //   let videoCount = container.querySelectorAll(".videoWrap").length;
 
-      if (videoCount >= 3) {
-        videoContainer.style.setProperty("--grow", 0 + "");
-      } else {
-        videoContainer.style.setProperty("--grow", 1 + "");
-      }
-    },
+    //   if (videoCount >= 3) {
+    //     videoContainer.style.setProperty("--grow", 0 + "");
+    //   } else {
+    //     videoContainer.style.setProperty("--grow", 1 + "");
+    //   }
+    // },
 
     uuidv4() {
       return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -517,6 +517,7 @@ export default {
       } else {
         let video = document.createElement("video");
         video.id = `remote_${username}`;
+        video.style.width="100%"
         video.srcObject = stream;
         video.autoplay = true;
         video.muted = username == this.userName;
@@ -524,7 +525,7 @@ export default {
         let div = document.createElement("div");
         div.id = `user_${username}`;
         div.classList.add("videoWrap");
-
+        div.style.width="100%"
         let nameContainer = document.createElement("div");
         nameContainer.classList.add("display_name");
         let textNode = document.createTextNode(username);
@@ -534,7 +535,7 @@ export default {
         document.querySelector(".videos-inner").appendChild(div);
       }
 
-      this.recalculateLayout();
+      //this.recalculateLayout();
     },
 
     async handleIceCandidate({ candidate }) {
@@ -680,7 +681,7 @@ export default {
           .forEach((track) => track.stop());
         document.querySelector(`#user_${username}`).remove();
 
-        this.recalculateLayout();
+        //this.recalculateLayout();
       }
     },
 
@@ -1259,4 +1260,29 @@ body {
   opacity: 0 !important;
   transition: 0.4s all;
 }
+
+#remote_videos {
+  width: 100%;
+  height: 750px;
+  margin: 20px auto;
+}
+
+.videos-inner {
+  width: 100%;
+  display: flex;
+  gap: 1.2rem;
+  justify-content:center;
+}
+
+.videos-inner .videoWrap {
+  width:100%!important;
+}
+
+.videos-inner .videoWrap video {
+  width: 100%!important;
+  height: 100%;
+  border-radius: 20px!important;
+}
+
+
 </style>

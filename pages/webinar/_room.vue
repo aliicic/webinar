@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid" style="direction:rtl">
+    <div class="container-fluid" style="direction: rtl">
       <div class="row webinar-live">
         <div class="col-lg-1 webinar-live__tab" :class="{ hidden: chatStatus }">
           <div class="webinar-live__logo">
@@ -9,20 +9,18 @@
           <div class="webinar-live__tabs-box">
             <div class="webinar-live__tabs">
               <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="20"
+                height="20"
                 fill="currentColor"
-                class="bi bi-clock"
+                class="bi bi-hand-index-thumb-fill"
                 viewBox="0 0 16 16"
+                id="IconChangeColor"
               >
                 <path
-                  d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"
-                  fill="#9fa6ae"
-                ></path>
-                <path
-                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"
+                  d="M8.5 1.75v2.716l.047-.002c.312-.012.742-.016 1.051.046.28.056.543.18.738.288.273.152.456.385.56.642l.132-.012c.312-.024.794-.038 1.158.108.37.148.689.487.88.716.075.09.141.175.195.248h.582a2 2 0 0 1 1.99 2.199l-.272 2.715a3.5 3.5 0 0 1-.444 1.389l-1.395 2.441A1.5 1.5 0 0 1 12.42 16H6.118a1.5 1.5 0 0 1-1.342-.83l-1.215-2.43L1.07 8.589a1.517 1.517 0 0 1 2.373-1.852L5 8.293V1.75a1.75 1.75 0 0 1 3.5 0z"
+                  id="mainIconPathAttribute"
+                  stroke-width="0"
                   fill="#9fa6ae"
                 ></path>
               </svg>
@@ -34,91 +32,76 @@
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-file-bar-graph"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M4.5 12a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1zm3 0a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm3 0a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1z"
-                  fill="#9fa6ae"
-                ></path>
-                <path
-                  d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"
-                  fill="#9fa6ae"
-                ></path>
-              </svg>
-            </div>
-            <div class="webinar-live__tabs">
-              <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-people-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                  fill="#9fa6ae"
-                ></path>
-                <path
-                  fill-rule="evenodd"
-                  d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"
-                  fill="#9fa6ae"
-                ></path>
-                <path
-                  d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"
-                  fill="#9fa6ae"
-                ></path>
-              </svg>
-            </div>
-            <div class="webinar-live__tabs">
-              <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-eye-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"
-                  fill="#9fa6ae"
-                ></path>
-                <path
-                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                  fill="#9fa6ae"
-                ></path>
-              </svg>
-            </div>
-            <div class="webinar-live__tabs">
-              <svg
-                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-clipboard-check"
+                class="bi bi-arrows-fullscreen"
                 viewBox="0 0 16 16"
               >
                 <path
                   fill-rule="evenodd"
-                  d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"
+                  d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"
+                  fill="#9fa6ae"
+                ></path>
+              </svg>
+              <!-- <svg
+                v-if="fullScreenFlag"
+                style="color: #9fa6ae"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-fullscreen-exit"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"
+                  fill="#9fa6ae"
+                ></path>
+              </svg> -->
+            </div>
+            <div @click="isMute = !isMute" class="webinar-live__tabs">
+              <svg
+                v-if="!isMute"
+                style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-mic-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"
                   fill="#9fa6ae"
                 ></path>
                 <path
-                  d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"
+                  d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"
+                  fill="#9fa6ae"
+                ></path>
+              </svg>
+              <svg
+                v-if="isMute"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-mic-mute-fill"
+                viewBox="0 0 16 16"
+                id="IconChangeColor"
+              >
+                <path
+                  d="M13 8c0 .564-.094 1.107-.266 1.613l-.814-.814A4.02 4.02 0 0 0 12 8V7a.5.5 0 0 1 1 0v1zm-5 4c.818 0 1.578-.245 2.212-.667l.718.719a4.973 4.973 0 0 1-2.43.923V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 1 0v1a4 4 0 0 0 4 4zm3-9v4.879L5.158 2.037A3.001 3.001 0 0 1 11 3z"
+                  id="mainIconPathAttribute"
                   fill="#9fa6ae"
                 ></path>
                 <path
-                  d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"
+                  d="M9.486 10.607 5 6.12V8a3 3 0 0 0 4.486 2.607zm-7.84-9.253 12 12 .708-.708-12-12-.708.708z"
+                  id="mainIconPathAttribute"
                   fill="#9fa6ae"
                 ></path>
               </svg>
             </div>
-            <div class="webinar-live__tabs">
+            <div class="webinar-live__tabs" @click="handleCamera()">
               <svg
+                v-if="!cameraOff"
                 style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -131,6 +114,71 @@
                   fill-rule="evenodd"
                   d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"
                   fill="#9fa6ae"
+                ></path>
+              </svg>
+              <svg
+                v-if="cameraOff"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-camera-video-off-fill"
+                viewBox="0 0 16 16"
+                id="IconChangeColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.961 12.365a1.99 1.99 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l6.69 9.365zm-10.114-9A2.001 2.001 0 0 0 0 5v6a2 2 0 0 0 2 2h5.728L.847 3.366zm9.746 11.925-10-14 .814-.58 10 14-.814.58z"
+                  id="mainIconPathAttribute"
+                  fill="#9fa6ae"
+                ></path>
+              </svg>
+            </div>
+            <div class="webinar-live__tabs" @click="handleVolume()">
+              <svg
+                v-if="VolumeCounter > 0"
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                fill="currentColor"
+                class="bi bi-volume-up-fill"
+                viewBox="0 0 16 16"
+                id="IconChangeColor"
+              >
+                <path
+                  v-if="VolumeCounter == 3"
+                  d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"
+                  id="mainIconPathAttribute"
+                  fill="#9fa6ae"
+                ></path>
+                <path
+                  v-if="VolumeCounter > 1"
+                  d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"
+                  id="mainIconPathAttribute"
+                  fill="#9fa6ae"
+                ></path>
+                <path
+                  v-if="VolumeCounter > 0"
+                  d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
+                  id="mainIconPathAttribute"
+                  fill="#9fa6ae"
+                ></path>
+              </svg>
+              <svg
+                v-if="VolumeCounter == 0"
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                fill="currentColor"
+                class="bi bi-volume-mute-fill"
+                viewBox="0 0 16 16"
+                id="IconChangeColor"
+              >
+                <path
+                  d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zm7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"
+                  id="mainIconPathAttribute"
+                  fill="#9fa6ae"
+                  stroke-width="0"
                 ></path>
               </svg>
             </div>
@@ -328,6 +376,8 @@ export default {
     confirmedMessage: null,
     userName: "",
     messages: [],
+    cameraOff: false,
+    VolumeCounter: 0,
     //
 
     configuration: {
@@ -350,6 +400,13 @@ export default {
     videos: [],
   }),
   methods: {
+    handleVolume() {
+      this.VolumeCounter++;
+      if (this.VolumeCounter > 3) this.VolumeCounter = 0;
+    },
+    handleCamera() {
+      this.cameraOff = !this.cameraOff;
+    },
     async send(message) {
       await this.socket.emit("newMessage", {
         sender: this.userName,
@@ -706,13 +763,11 @@ export default {
         let constraint = {
           audio: true,
           video: {
-         
             width: { min: 320, ideal: 640, max: 1920 },
             height: { min: 180, ideal: 400 },
             aspectRatio: 1.777777778,
             frameRate: { max: 30 },
             facingMode: { exact: "user" },
-          
           },
         };
         let stream = await navigator.mediaDevices.getUserMedia(constraint);
@@ -997,11 +1052,13 @@ body {
     padding: 10px 12px;
     border-radius: 15px;
     transition: background 0.4s;
+    cursor: pointer;
     svg path {
       transition: background 0.4s;
     }
     &:hover {
       background: #dff3f1;
+
       svg path {
         fill: #05a28d !important;
       }

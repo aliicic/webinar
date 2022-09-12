@@ -57,7 +57,7 @@
                 ></path>
               </svg> -->
             </div>
-            <div @click="isMute = !isMute" class="webinar-live__tabs">
+            <div @click="handleMic()" class="webinar-live__tabs">
               <svg
                 v-if="!isMute"
                 style="height: 20px; width: 20px; color: rgb(159, 166, 174)"
@@ -232,11 +232,15 @@
               </svg>
             </div>
             <h4 class="webinar-live__title">{{ userName }}</h4>
-            <span
-              @click="connect()"
-              class="webinar-live__badge ml-2 webinar-live__badge_purple"
-            >
+            <span class="webinar-live__badge ml-2 webinar-live__badge_purple">
               {{ $nuxt._route.params.room }}
+            </span>
+            <span
+              class="webinar-live__badge ml-2 webinar-live__badge_green"
+              style="cursor: pointer"
+              @click="connect()"
+            >
+              شروع وبینار
             </span>
           </div>
 
@@ -330,8 +334,9 @@
                   <video
                     :srcObject.prop="item.src"
                     autoplay
-                    muted
+                    :muted="item.id == userName"
                     :id="`remote_${item.id}`"
+                    class="video"
                   ></video>
                 </div>
               </div>
@@ -377,7 +382,7 @@ export default {
     userName: "",
     messages: [],
     cameraOff: false,
-    VolumeCounter: 0,
+    VolumeCounter: 3,
     //
 
     configuration: {
@@ -400,12 +405,34 @@ export default {
     videos: [],
   }),
   methods: {
+    handleMic() {
+      this.isMute = !this.isMute;
+      this.muteMic();
+    },
     handleVolume() {
       this.VolumeCounter++;
-      if (this.VolumeCounter > 3) this.VolumeCounter = 0;
+      let videos = document.getElementsByClassName("video");
+      let arrayOfvideos = [...videos];
+      if (this.VolumeCounter >3) {
+        this.VolumeCounter = 0;
+        //console.log(videos);
+         arrayOfvideos.map((item) => {
+          item.volume =0
+          console.log(item.volume)
+        });
+      }else{
+            arrayOfvideos.map((item) => {
+      item.volume += .33
+      console.log(item.volume)
+      })
+      }
+
+
+
     },
     handleCamera() {
       this.cameraOff = !this.cameraOff;
+      this.muteCam();
     },
     async send(message) {
       await this.socket.emit("newMessage", {
@@ -756,10 +783,21 @@ export default {
         //this.recalculateLayout();
       }
     },
+    muteMic() {
+      this.localStream
+        .getAudioTracks()
+        .forEach((track) => (track.enabled = !track.enabled));
+    },
+
+    muteCam() {
+      this.localStream
+        .getVideoTracks()
+        .forEach((track) => (track.enabled = !track.enabled));
+    },
 
     async connect() {
       //Produce media
-      if (this.userName == "ali") {
+      if (this.userName == "admin") {
         let constraint = {
           audio: true,
           video: {
@@ -988,6 +1026,8 @@ body {
     &_green {
       background: #d1e6e7;
       color: #4fad9f;
+      border-color: #4fad9f !important;
+      outline: none;
     }
     &_red {
       background: #fcf2f1;
@@ -1071,7 +1111,7 @@ body {
       text-align: left;
     }
     img {
-      width: 30px;
+      width: 100%;
       border-radius: 100%;
       box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
         rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -1084,7 +1124,7 @@ body {
       width: 10%;
     }
     img {
-      width: 30px;
+      width: 100%;
     }
   }
 }
@@ -1379,6 +1419,4 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
 }
-
-
 </style>

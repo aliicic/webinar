@@ -77,11 +77,17 @@
       >
         <ul>
           <li
+            style="display: flex; align-items: center"
             v-for="(item, index) in onlineUsers"
             :key="index"
             @click="chooseUser(item.name, item.id)"
+            class="mb-2 usersList"
           >
-            {{ item.name }}
+            <div
+              class="msg-img mr-2"
+              style="background: url('/person.jpg')"
+            ></div>
+            <div>{{ item.name }}</div>
           </li>
         </ul>
       </div>
@@ -427,6 +433,14 @@ export default {
   .msger-chat {
     background-color: #edf0f5;
   }
+}
+.usersList{
+  transition: .4s all;
+  cursor:pointer;
+  padding: 10px;
+}
+.usersList :hover{
+  // transform: translateX(-10px);
 }
 /* we will explain what these classes do next! */
 .v-enter-active,

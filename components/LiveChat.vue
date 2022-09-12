@@ -5,11 +5,20 @@
       <div class="msger-header">
         <div class="msger-header-title">چت گروهی</div>
         <div class="msger-header-options">
-          <span class="messages" @click="messagerTab = true">پیام ها</span>
-          <span class="members" @click="messagerTab = false">شرکت کنندگان</span>
+          <span
+            class="messages"
+            :class="{ green: messagerTab }"
+            @click="messagerTab = true"
+            >پیام ها</span
+          >
+          <span
+            class="members"
+            :class="{ green: !messagerTab }"
+            @click="messagerTab = false"
+            >شرکت کنندگان</span
+          >
         </div>
       </div>
-
       <main v-show="messagerTab" class="msger-chat" id="msger-chat">
         <div
           class="msg f-is"
@@ -33,6 +42,7 @@
           </div>
         </div>
       </main>
+
       <p v-show="messagerTab" class="istyping">{{ typing }}</p>
       <form v-show="messagerTab" class="msger-inputarea">
         <input
@@ -265,11 +275,23 @@ export default {
     //   font-size: 12px;
     // }
   }
-  .msger-header .messages {
-    background: #d1e6e7;
-    color: #2e7e71;
+  .msger-header .messages,
+  .msger-header .members {
+    // background: #d1e6e7;
+    // color: #2e7e71;
     padding: 10px;
     border-radius: 15px;
+    cursor: pointer;
+    transition: 0.4s all;
+  }
+  .msger-header .members:hover,
+  .msger-header .messages:hover {
+    background: #d1e6e7;
+    color: #2e7e71;
+  }
+  .green {
+    background: #d1e6e7;
+    color: #2e7e71;
   }
 
   .msger-chat {
@@ -405,5 +427,15 @@ export default {
   .msger-chat {
     background-color: #edf0f5;
   }
+}
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

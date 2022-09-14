@@ -323,6 +323,9 @@
           > -->
           <div id="video-container" class="webinar-live-player">
             <div id="remote_videos">
+              <div class="close-remote-video" @click="closeRemotevideo" v-if="userName =='admin'">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
               <div class="videos-inner">
                 <div
                   v-for="(item, index) in videos"
@@ -403,8 +406,19 @@ export default {
     clients: new Map(),
     remoteContainer: null,
     videos: [],
+    secondPlayerIs : false
   }),
+  watch:{
+   videos(){
+    if(this.videos.length>1){
+      this.secondPlayerIs = true
+    }
+   }
+  },
   methods: {
+    closeRemotevideo(){
+     this.secondPlayerIs = false
+    },
     handleMic() {
       this.isMute = !this.isMute;
       this.muteMic();
@@ -526,6 +540,10 @@ export default {
       });
     },
     async choosedUserToCall() {
+      if(this.secondPlayerIs){
+        alert('ابتدا کاربر فعلی را قطع کنید')
+        return
+      }
       await this.socket.on("choosed-to-call", async (data) => {
         //console.log("heyyyy");
         let constraint = {
@@ -805,7 +823,7 @@ export default {
             height: { min: 180, ideal: 400 },
             aspectRatio: 1.777777778,
             frameRate: { max: 30 },
-            facingMode: { exact: "user" },
+            //facingMode: { exact: "user" },
           },
         };
         let stream = await navigator.mediaDevices.getUserMedia(constraint);
@@ -1418,5 +1436,37 @@ body {
   font-size: 0.95rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
+}
+.close-remote-video{
+  position: absolute;
+  top: 20px;  
+  left: 20px;
+  z-index: 10;
+  font-size: 20px;
+  background: white;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  transition: .4s all;
+  cursor: pointer;
+
+  &:hover{
+   // opacity: .5;
+
+    i{
+      color: red;
+    }
+  }
+
+  i{
+    color: rgb(253, 128, 128);
+    font-size: 30px;
+    transition: .4s all;
+ 
+  }
+
 }
 </style>

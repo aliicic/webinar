@@ -64,6 +64,7 @@ module.exports = class NamespaceSocketHandler {
         const roomInfo = conversation.rooms.find(
           (item) => item.name == roomName
         );
+        console.log(roomInfo , "roominfo")
         socket.emit("roomInfo", roomInfo);
         this.getNewMessage(socket);
         socket.on("disconnect", async () => {

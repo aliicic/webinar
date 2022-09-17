@@ -29,7 +29,7 @@ class RoomController {
 
   async getListOfRooms(req, res, next) {
     try {
-      const conversation = await ConversationModel.find({}, { rooms: 1 });
+      const conversation = 'room1'
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data: {

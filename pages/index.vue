@@ -36,21 +36,9 @@ export default {
 
   methods: {
     login() {
-      fetch("http://localhost:3000/api/login", {
-        // Adding method type
-        method: "POST",
-        // Adding body or contents to send
-        body: JSON.stringify({
-          mobile: this.loginInfo,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-        .then((response) => response.json())
+    
 
         // Displaying results to console
-        .then((json) => {
           if (this.loginInfo == "") return;
           if (this.loginInfo == "admin" && this.password != "qwerty") return;
           localStorage.setItem("name", this.loginInfo);
@@ -59,7 +47,7 @@ export default {
             name: "webinar-room",
             params: { room: "room1" },
           });
-        });
+        
     },
 
     async getRooms() {

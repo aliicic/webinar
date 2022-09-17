@@ -8,10 +8,10 @@ const { initialSocket } = require("./utils/initSocket");
 const { socketHandler } = require("./socket.io");
 
 
-mongoose.connect("mongodb://localhost:27017/storeDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect("mongodb://localhost:27017/storeDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 const app = express();
 

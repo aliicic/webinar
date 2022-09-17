@@ -1,4 +1,4 @@
-const { ConversationModel } = require("../models/conversation");
+
 const { v4: uuidv4 } = require("uuid");
 const webrtc = require("wrtc");
 const fs = require("fs");
@@ -17,33 +17,15 @@ module.exports = class NamespaceSocketHandler {
     this.#io = io;
   }
   async createNamespacesConnection() {
-    const namespaces = await ConversationModel.find(
-      {},
-      {
-        title: 1,
-        endpoint: 1,
-        rooms: 1,
-      }
-    ).sort({
-      _id: -1,
-    });
-    // for (const namespace of namespaces) {
-    //? this is a static namespace , because we need one name space
-    // let namespace = {
-    //   name: "webinars",
-    //   endpoint: "webinars",
-    // };
-    this.#io.of(`/${namespace.name}`).on("connection", async (socket) => {
+
+    this.#io.of(`webinars`).on("connection", async (socket) => {
       console.log("socket server is running");
 
       let peerId = uuidv4();
       console.log(peerId, "peer id");
-      const conversation = await ConversationModel.findOne(
-        { endpoint: namespace.endpoint },
-        { endpoint: 1, rooms: 1 }
-      ).sort({ _id: -1 });
+      //const conversation = {rooms : ['room1']}
       socket.emit("message", { type: "welcome", id: peerId });
-      socket.emit("roomList", conversation.rooms);
+      socket.emit("roomList", ['room1']);
       socket.on("joinRoom", async (data) => {
         const roomName = data.roomName;
         const userName = data.userName;
@@ -61,9 +43,7 @@ module.exports = class NamespaceSocketHandler {
         }
         socket.join(roomName);
         await this.getCountOfOnlineUsers(namespace.endpoint, roomName);
-        const roomInfo = conversation.rooms.find(
-          (item) => item.name == roomName
-        );
+        const roomInfo = {name : 'room1'}
         //console.log(roomInfo , "roominfo")
         socket.emit("roomInfo", roomInfo);
         this.getNewMessage(socket);
@@ -190,7 +170,7 @@ module.exports = class NamespaceSocketHandler {
     //}
   }
   //? roomName param without default value "room1" also works , check later . 
-  async getCountOfOnlineUsers(endpoint, roomName = "room1", userName) {
+  async getCountOfOnlineUsers(endpoint="webinars", roomName = "room1", userName) {
     const onlineUsers = await this.#io
       .of(`/${endpoint}`)
       .in(roomName)
@@ -233,18 +213,8 @@ module.exports = class NamespaceSocketHandler {
   
   initConnection() {
     this.#io.on("connection", async (socket) => {
-      const namespaces = await ConversationModel.find(
-        {},
-        {
-          title: 1,
-          endpoint: 1,
-          rooms: 1,
-        }
-      ).sort({
-        _id: -1,
-      });
-      // console.log('hey it works')
-      socket.emit("namespacesList", namespaces);
+      
+      socket.emit("namespacesList", 'webinars');
     });
   }
   handleTrackEvent(e, peer, socket) {
@@ -277,7 +247,7 @@ module.exports = class NamespaceSocketHandler {
   getNewMessage(socket) {
     socket.on("newMessage", async (data) => {
       //console.log(data);
-      const { message, roomName, endpoint, sender } = data;
+      //const { message, roomName, endpoint, sender } = data;
       // console.log(message);
       // console.log(roomName);
       // console.log(endpoint);
@@ -297,7 +267,7 @@ module.exports = class NamespaceSocketHandler {
       //     },
       //   }
       // );
-      this.#io.of(`/${endpoint}`).in(roomName).emit("confirmMessage", data);
+      this.#io.of(`webinars`).in('room1').emit("confirmMessage", data);
     });
   }
 };

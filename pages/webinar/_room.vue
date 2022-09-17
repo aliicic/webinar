@@ -537,7 +537,7 @@ export default {
       await this.socket.on("roomInfo", (roomInfo) => {
         this.roomName = roomInfo.name;
         // console.log(roomInfo, 'rooooom')
-        this.messages = roomInfo.messages;
+       // this.messages = roomInfo.messages;
         // console.log(this.roomName , 'this is roomname')
       });
       await this.socket.on("countOfOnlineUsers", (count) => {

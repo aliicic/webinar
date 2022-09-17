@@ -64,7 +64,7 @@ export default {
       {
         // At least one entry is required
         name: "home",
-        url: "https://130.236.87.10:3001/webinars",
+        url: "http://localhost:3001/webinars",
         default: true,
         // vuex: {
         //   /* see section below */

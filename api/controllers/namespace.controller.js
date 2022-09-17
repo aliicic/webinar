@@ -22,7 +22,15 @@ class NamespaceController {
 
   async getListOfNamespaces(req, res, next) {
     try {
-      const namespaces = await ConversationModel.find({}, { rooms: 0 });
+      const namespaces =  [
+            {
+              "_id": "632163a47b40396287e09ab9",
+              "title": "webinars",
+              "endpoint": "webinars",
+              "__v": 0
+            }
+          ]
+       
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         data: {

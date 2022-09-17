@@ -49,7 +49,7 @@ module.exports = class NamespaceSocketHandler {
         const userName = data.userName;
 
         totalUsers.push({ name: userName, id: socket.id, roomName: roomName });
-        console.log(data);
+  
         const lastRoom = Array.from(socket.rooms)[1];
         if (lastRoom) {
           socket.leave(lastRoom);
@@ -64,21 +64,29 @@ module.exports = class NamespaceSocketHandler {
         const roomInfo = conversation.rooms.find(
           (item) => item.name == roomName
         );
-        console.log(roomInfo , "roominfo")
+        //console.log(roomInfo , "roominfo")
         socket.emit("roomInfo", roomInfo);
         this.getNewMessage(socket);
-        socket.on("disconnect", async () => {
+        socket.on("disconnect", async () => {        
           this.handleClose(peerId, socket);
-          await this.getCountOfOnlineUsers(namespace.endpoint);
+          console.log(peerId,'peer id disc')
           totalUsers.map((item, index) => {
             if (item.id === socket.id) totalUsers.splice(index, 1);
           });
+          await this.getCountOfOnlineUsers(namespace.endpoint);
         });
+        socket.on('remote-disconnect', ()=>{ 
+          this.handleRemoteClose(peerId , socket);
+        })
       });
       socket.on("choose-user", (data) => {
-        console.log(data);
+      
         socket.to(data.id).emit("choosed-to-call");
       });
+      socket.on("close-remote-video" , (data)=>{
+       
+        socket.to(data).emit("choosed-to-close");
+      })
       socket.on("message", async (message) => {
         // this.test();
         const body = message;
@@ -86,8 +94,8 @@ module.exports = class NamespaceSocketHandler {
         switch (body.type) {
           case "connect":
             peers.set(body.uqid, { socket });
-            // console.log(x)
-            console.log(peers.get(body.uqid), "this is body");
+        
+        
             const peer = this.createPeer();
 
             peers.get(body.uqid).username = body.username;
@@ -109,7 +117,7 @@ module.exports = class NamespaceSocketHandler {
             break;
           case "getPeers":
             let uuid = body.uqid;
-            console.log(uuid, "this");
+      
             const list = [];
             peers.forEach((peer, key) => {
               if (key != uuid) {
@@ -125,7 +133,7 @@ module.exports = class NamespaceSocketHandler {
               type: "peers",
               peers: list,
             };
-            //console.log(peersPayload, "pauload list");
+           
             socket.emit("message", peersPayload);
             break;
           case "ice":
@@ -170,7 +178,7 @@ module.exports = class NamespaceSocketHandler {
                 .get(body.consumerId)
                 .addIceCandidate(new webrtc.RTCIceCandidate(body.ice))
                 .catch((e) => console.log(e));
-              console.log(body, "cons_ice_body");
+              //console.log(body, "cons_ice_body");
             }
             break;
           default:
@@ -181,7 +189,8 @@ module.exports = class NamespaceSocketHandler {
     });
     //}
   }
-  async getCountOfOnlineUsers(endpoint, roomName, userName) {
+  //? roomName param without default value "room1" also works , check later . 
+  async getCountOfOnlineUsers(endpoint, roomName = "room1", userName) {
     const onlineUsers = await this.#io
       .of(`/${endpoint}`)
       .in(roomName)
@@ -203,6 +212,25 @@ module.exports = class NamespaceSocketHandler {
       id: peerId,
     });
   }
+  handleRemoteClose(peerId, socket) {
+    console.log(peerId, "disconnected");
+    peers.delete(peerId);
+    consumers.delete(peerId);
+    // activeUsers.map((item, index) => {
+    //   if (item.id === socket.id) activeUsers.splice(index, 1);
+    // });
+    // //console.log(activeUsers);
+    // io.emit("userList", activeUsers);
+    this.#io.of(`webinars`).in('room1').emit("message", {
+      type: "user_left",
+      id: peerId,
+    });
+    // socket.broadcast.to("room1").emit("message", {
+    //   type: "user_left",
+    //   id: peerId,
+    // });
+  }
+  
   initConnection() {
     this.#io.on("connection", async (socket) => {
       const namespaces = await ConversationModel.find(
@@ -250,10 +278,10 @@ module.exports = class NamespaceSocketHandler {
     socket.on("newMessage", async (data) => {
       //console.log(data);
       const { message, roomName, endpoint, sender } = data;
-      console.log(message);
-      console.log(roomName);
-      console.log(endpoint);
-      console.log(sender);
+      // console.log(message);
+      // console.log(roomName);
+      // console.log(endpoint);
+      // console.log(sender);
       let today = new Date();
       // let date =today.getFullYear() +"-" +(today.getMonth() + 1) + "-" +today.getDate();
       let time = today.getHours() + ":" + today.getMinutes();

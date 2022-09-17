@@ -323,9 +323,6 @@
           > -->
           <div id="video-container" class="webinar-live-player">
             <div id="remote_videos">
-              <div class="close-remote-video" @click="closeRemotevideo" v-if="userName =='admin'">
-                <i class="fa fa-times" aria-hidden="true"></i>
-              </div>
               <div class="videos-inner">
                 <div
                   v-for="(item, index) in videos"
@@ -333,6 +330,9 @@
                   :id="`user_${item.id}`"
                   class="videoWrap"
                 >
+                <div class="close-remote-video" @click="closeRemotevideo" v-if="userName =='admin' && item.id != 'admin'">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                </div>
                   <div class="display_name">{{ item.id }}</div>
                   <video
                     :srcObject.prop="item.src"
@@ -362,6 +362,8 @@
 </template>
 
 <script>
+import { iterInternalSymbol } from 'domexception/lib/utils';
+
 let peer = null;
 export default {
   layout: "blank",
@@ -406,7 +408,9 @@ export default {
     clients: new Map(),
     remoteContainer: null,
     videos: [],
-    secondPlayerIs : false
+    secondPlayerIs : false,
+    choosedUserIdToCall : "",
+    peerObject : '',
   }),
   watch:{
    videos(){
@@ -416,9 +420,6 @@ export default {
    }
   },
   methods: {
-    closeRemotevideo(){
-     this.secondPlayerIs = false
-    },
     handleMic() {
       this.isMute = !this.isMute;
       this.muteMic();
@@ -539,11 +540,14 @@ export default {
         console.log(this.confirmedMessage, "confirmed message");
       });
     },
+    async chooseUserToClose(){
+    
+      await this.socket.on("choosed-to-close" , ()=>{
+        this.handleRemoteCloseByAdmin()
+      })
+
+    }, 
     async choosedUserToCall() {
-      if(this.secondPlayerIs){
-        alert('ابتدا کاربر فعلی را قطع کنید')
-        return
-      }
       await this.socket.on("choosed-to-call", async (data) => {
         //console.log("heyyyy");
         let constraint = {
@@ -553,7 +557,7 @@ export default {
             height: { min: 180, ideal: 400 },
             aspectRatio: 1.777777778,
             frameRate: { max: 30 },
-            facingMode: { exact: "user" },
+            // facingMode: { exact: "user" },
           },
         };
         let stream = await navigator.mediaDevices.getUserMedia(constraint);
@@ -564,20 +568,29 @@ export default {
         this.localStream
           .getTracks()
           .forEach((track) => peer.addTrack(track, this.localStream));
-        //  await subscribe();
+           //await subscribe();
       });
     },
 
     //? import from advanced webrtc project
 
     chooseUser(username, id) {
+      if(this.secondPlayerIs){
+        alert('ابتدا کاربر فعلی را قطع کنید')
+        return
+      }
       //alert(id)
       // if (nickname != "admin") return;
+      this.choosedUserIdToCall = id
       let payload = {
         name: username,
         id: id,
       };
       this.socket.emit("choose-user", payload);
+    },
+    closeRemotevideo(){
+      this.secondPlayerIs = false
+      this.socket.emit("close-remote-video" , this.choosedUserIdToCall)
     },
 
     async init() {
@@ -698,6 +711,7 @@ export default {
     },
 
     async createConsumeTransport(peer) {
+      this.peerObject = peer
       let consumerId = this.uuidv4();
       console.log(peer.id, "peer id");
       console.log(consumerId, "peer id");
@@ -787,19 +801,24 @@ export default {
     },
 
     removeUser({ id }) {
+      console.log(id ,"i want this")
+      console.log(this.localUUID)
+      console.log(this.peerObject)
+
       if (this.clients.get(id)) {
-        console.log(this.clients.get(id));
+        // console.log(this.clients.get(id));
         let { username, consumerId } = this.clients.get(id);
         this.consumers.delete(consumerId);
         this.clients.delete(id);
+        
         document
           .querySelector(`#remote_${username}`)
           .srcObject.getTracks()
           .forEach((track) => track.stop());
         document.querySelector(`#user_${username}`).remove();
-
-        //this.recalculateLayout();
+        
       }
+        
     },
     muteMic() {
       this.localStream
@@ -848,6 +867,16 @@ export default {
       this.localStream.getTracks().forEach((track) => track.stop());
       this.clients = null;
       this.consumers = null;
+    },
+
+    handleRemoteCloseByAdmin(){
+      this.socket.emit('remote-disconnect',{peer : this.peerObject , socketId : this.socket.id})
+      this.removeLocalUserByAdmin()
+    },
+    
+    //? to delete local video by admin controller 
+    removeLocalUserByAdmin(){ 
+      document.querySelector(`#user_${this.userName}`).remove();
     },
 
     createPeer() {
@@ -923,6 +952,7 @@ export default {
     // this.joinRoom();
     this.roomInfo();
     this.choosedUserToCall();
+    this.chooseUserToClose();
     this.socket.on("message", (e) => {
       console.log("socket message");
       this.handleMessage(e);

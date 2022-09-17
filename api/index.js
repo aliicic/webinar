@@ -15,8 +15,44 @@ const { socketHandler } = require("./socket.io");
 
 const app = express();
 
-const io = initialSocket(3001);
-socketHandler(io);
+// const io = initialSocket(3001);
+// socketHandler(io);
+
+let serverOptions = {
+  listenPort: 3000,
+  useHttps: true,
+  //  httpsCertFile: '/path/',
+  //  httpsKeyFile: '/path/',
+};
+
+let sslOptions = {};
+if (serverOptions.useHttps) {
+  sslOptions.key = fs.readFileSync(__dirname + '/path/mykey.key', 'utf8').toString();
+  sslOptions.cert = fs.readFileSync(__dirname + '/path/mycert.pem', 'utf8').toString();
+}
+
+const http = require("http");
+const https = require('https');
+
+
+let webServer = null;
+
+  const server  = https.createServer(sslOptions, app); 
+  server.listen('3001', () => {
+    console.log("run > http://localhost:" + '3001');
+  });
+  const io = initialSocket(server);
+  socketHandler(io);
+
+ 
+
+
+
+
+
+
+
+
 
 app.use(cookieParser());
 app.use(

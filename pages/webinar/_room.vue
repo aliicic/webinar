@@ -421,8 +421,14 @@ export default {
   },
   methods: {
     handleMic() {
-      this.isMute = !this.isMute;
-      this.muteMic();
+      try{
+        this.muteMic();
+        this.isMute = !this.isMute;
+
+      }catch(e){
+      console.log(e)
+      }
+    
     },
     handleVolume() {
       this.VolumeCounter++;
@@ -446,8 +452,13 @@ export default {
 
     },
     handleCamera() {
-      this.cameraOff = !this.cameraOff;
-      this.muteCam();
+      try{
+        this.muteCam();
+        this.cameraOff = !this.cameraOff;
+      }catch(e){
+       console.log(e)
+      }
+ 
     },
     async send(message) {
       await this.socket.emit("newMessage", {

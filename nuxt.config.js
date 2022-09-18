@@ -1,4 +1,5 @@
-
+import path from 'path'
+import fs from 'fs'
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
@@ -64,7 +65,7 @@ export default {
       {
         // At least one entry is required
         name: "home",
-        url: "https://130.236.87.10:3001/webinars",
+        url: "http://localhost:3001/webinars",
         default: true,
         // vuex: {
         //   /* see section below */
@@ -85,7 +86,12 @@ export default {
   // },
   server: {
     host: "0.0.0.0",
-    port: 3000},
+    port: 3000,
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname + '/api/path/', 'mykey.key')),
+      cert: fs.readFileSync(path.resolve(__dirname+ '/api/path/', 'mycert.pem'))
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
